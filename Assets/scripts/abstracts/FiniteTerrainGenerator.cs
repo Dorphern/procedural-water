@@ -2,6 +2,6 @@
 
 public abstract class FiniteTerrainGenerator : TerrainGenerator {
 	
-	public FiniteTerrainGenerator(string seed) : base(seed) { }
+	public FiniteTerrainGenerator(int seed) : base(seed) { }
 
 }

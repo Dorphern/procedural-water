@@ -3,10 +3,18 @@ using System.Collections;
 
 public class BasicFiniteTerrain : FiniteTerrainGenerator {
 
-	public BasicFiniteTerrain(string seed) : base(seed) { }
+	public BasicFiniteTerrain(int seed) : base(seed) { }
 
 	public override Heightmap generateWater() {
-		return null;
+		Heightmap heightmap = new Heightmap(this.width, this.height);
+		
+		for (int x = 0; x < this.width; x++) {
+			for (int y = 0; y < this.width; y++) {
+				heightmap.setHeight(x, y, 0.5f);
+			}
+		}
+		
+		return heightmap;
 	}
 
 	public override Heightmap generateTerrain() {

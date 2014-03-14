@@ -40,6 +40,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   simSizeMin: 32
   simSizeMax: 128
+  groundTerrain: {fileID: 0}
+  waterTerrain: {fileID: 0}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

@@ -6,9 +6,9 @@ public abstract class TerrainGenerator {
 	protected int offsetY;
 	protected int width;
 	protected int height;
-	protected string seed;
+	protected int seed;
 
-	public TerrainGenerator(string seed) {
+	public TerrainGenerator(int seed) {
 		this.seed = seed;
 	}
 		

@@ -1,14 +1,22 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/scripts/Heightmap.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/scripts/CameraControl.cs">
     <Files>
-      <File FileName="Assets/scripts/Heightmap.cs" Line="12" Column="3" />
+      <File FileName="Assets/scripts/Heightmap.cs" Line="18" Column="28" />
+      <File FileName="Assets/scripts/CameraControl.cs" Line="7" Column="46" />
+      <File FileName="Assets/scripts/generators/BasicFiniteTerrain.cs" Line="7" Column="2" />
+      <File FileName="Assets/scripts/abstracts/FiniteTerrainGenerator.cs" Line="4" Column="2" />
+      <File FileName="Assets/scripts/abstracts/InfiniteTerrainGenerator.cs" Line="10" Column="33" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
-        <State expanded="True" selected="True">
+        <State expanded="True">
           <Node name="Assembly-CSharp" expanded="True">
-            <Node name="scripts" expanded="True" />
+            <Node name="scripts" expanded="True">
+              <Node name="abstracts" expanded="True" />
+              <Node name="generators" expanded="True" />
+              <Node name="CameraControl.cs" selected="True" />
+            </Node>
           </Node>
         </State>
       </Pad>
