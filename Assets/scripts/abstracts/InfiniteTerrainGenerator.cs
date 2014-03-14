@@ -7,7 +7,7 @@ public abstract class InfiniteTerrainGenerator : TerrainGenerator {
 	 * I'm not very sure if this is the right way to do it.
 	 * */
 
-	public InfiniteTerrainGenerator(string seed) : base(seed) { }
+	public InfiniteTerrainGenerator(int seed) : base(seed) { }
 
 	public abstract float pointWaterHeight(int x, int y);
 

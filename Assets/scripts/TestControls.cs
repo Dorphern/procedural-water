@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Text;
 
 public class TestControls : MonoBehaviour {
 	
@@ -9,8 +10,8 @@ public class TestControls : MonoBehaviour {
 	private string generationSeed = "";
 	private float simulationSize = 1f;
 
-	private TerrainData terrainData;
-	private GameObject terrain;
+	[SerializeField] private Terrain groundTerrain;
+	[SerializeField] private Terrain waterTerrain;
 
 	// Use this for initialization
 	void Start () {
@@ -35,28 +36,43 @@ public class TestControls : MonoBehaviour {
 		GUILayout.EndArea();
 	}
 
+	int numberFromString(string str) {
+		int d = 0, i = 0;
+		foreach (char c in str)
+		{
+			d += ((int) Mathf.Pow(10, i)) * (int) c;
+			i++;
+		}
+		return d;
+	}
+
 	void generateTerrain() {
-		if (this.terrain) Destroy(this.terrain);
-		this.terrainData = new TerrainData();
-		this.terrain = Terrain.CreateTerrainGameObject(terrainData);
+		TerrainData groundTerrainData 	= this.groundTerrain.terrainData;
+		TerrainData waterTerrainData 	= this.waterTerrain.terrainData;
 
 		int res = (int)(this.simulationSize + 1f);
 		int size = res * 2;
 
 		int height = 15;
 
-		this.terrainData.alphamapResolution = res;
-		this.terrainData.heightmapResolution = res;
-		this.terrainData.SetDetailResolution(res, 8);
+		groundTerrainData.alphamapResolution 	= waterTerrainData.alphamapResolution 	= res;
+		groundTerrainData.heightmapResolution 	= waterTerrainData.heightmapResolution 	= res;
+		groundTerrainData.SetDetailResolution(res, 8);
+		waterTerrainData.SetDetailResolution(res, 8);
 
-		this.terrainData.size = new Vector3(size, height, size);
+		groundTerrainData.size = waterTerrainData.size = new Vector3(size, height, size);
 
-		this.terrain.transform.position = new Vector3(-this.terrainData.size.x / 2f, 0f, -this.terrainData.size.z / 2f);
 
-		TerrainGenerator generator = new BasicFiniteTerrain(this.generationSeed);
+		this.groundTerrain.gameObject.transform.position = 
+			this.waterTerrain.gameObject.transform.position =
+				new Vector3(-groundTerrainData.size.x / 2f, 0f, -groundTerrainData.size.z / 2f);
+
+		TerrainGenerator generator = new BasicFiniteTerrain(numberFromString(this.generationSeed));
 		generator.setSize(res, res);
-		Heightmap heightmap = generator.generateTerrain();
+		Heightmap groundHeightmap = generator.generateTerrain();
+		Heightmap waterHeightmap = generator.generateWater();
 
-		terrainData.SetHeights(0, 0, heightmap.getHeights());
+		groundTerrainData.SetHeights(0, 0, groundHeightmap.getHeights());
+		waterTerrainData.SetHeights(0, 0, waterHeightmap.getHeights());
 	}
 }
