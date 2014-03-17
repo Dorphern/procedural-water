@@ -4,7 +4,7 @@ using System.Collections;
 public class BasicFiniteTerrain : FiniteTerrainGenerator {
 
 	public BasicFiniteTerrain(int seed) : base(seed) { 
-		setScale(0.2f);
+//		setScale(0.2f);
 	}
 
 	public override Heightmap generateWater() {
