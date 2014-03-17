@@ -53,7 +53,7 @@ public class TestControls : MonoBehaviour {
 		int res = (int)(this.simulationSize + 1f);
 		int size = res * 2;
 
-		int height = 15;
+		int height = 30;
 
 		groundTerrainData.alphamapResolution 	= waterTerrainData.alphamapResolution 	= res;
 		groundTerrainData.heightmapResolution 	= waterTerrainData.heightmapResolution 	= res;

@@ -3,14 +3,16 @@ using System.Collections;
 
 public class BasicFiniteTerrain : FiniteTerrainGenerator {
 
-	public BasicFiniteTerrain(int seed) : base(seed) { }
+	public BasicFiniteTerrain(int seed) : base(seed) { 
+		setScale(0.2f);
+	}
 
 	public override Heightmap generateWater() {
 		Heightmap heightmap = new Heightmap(this.width, this.height);
 		
 		for (int x = 0; x < this.width; x++) {
 			for (int y = 0; y < this.width; y++) {
-				heightmap.setHeight(x, y, 0.5f);
+				heightmap.setHeight(x, y, 0.1f);
 			}
 		}
 		
@@ -22,7 +24,7 @@ public class BasicFiniteTerrain : FiniteTerrainGenerator {
 
 		for (int x = 0; x < this.width; x++) {
 			for (int y = 0; y < this.width; y++) {
-				heightmap.setHeight(x, y, Random.Range(0f, 1f));
+				heightmap.setHeight(x, y, getBaseTerrainHeight(x, y));
 			}
 		}
 
