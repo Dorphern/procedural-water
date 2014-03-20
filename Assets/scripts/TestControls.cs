@@ -13,6 +13,8 @@ public class TestControls : MonoBehaviour {
 	[SerializeField] private Terrain groundTerrain;
 	[SerializeField] private Terrain waterTerrain;
 
+	[SerializeField] private ATerrainGenerator terrainGenerator[];
+
 	// Use this for initialization
 	void Start () {
 		this.simulationSize = this.simSizeMin;
@@ -46,26 +48,41 @@ public class TestControls : MonoBehaviour {
 		return d;
 	}
 
-	void generateTerrain() {
+	void setTerrainObjects() {
 		TerrainData groundTerrainData 	= this.groundTerrain.terrainData;
 		TerrainData waterTerrainData 	= this.waterTerrain.terrainData;
 
 		int res = (int)(this.simulationSize + 1f);
 		int size = res * 2;
-
+		
 		int height = 30;
-
+		
 		groundTerrainData.alphamapResolution 	= waterTerrainData.alphamapResolution 	= res;
 		groundTerrainData.heightmapResolution 	= waterTerrainData.heightmapResolution 	= res;
 		groundTerrainData.SetDetailResolution(res, 8);
 		waterTerrainData.SetDetailResolution(res, 8);
-
+		
 		groundTerrainData.size = waterTerrainData.size = new Vector3(size, height, size);
-
-
+		
 		this.groundTerrain.gameObject.transform.position = 
 			this.waterTerrain.gameObject.transform.position =
 				new Vector3(-groundTerrainData.size.x / 2f, 0f, -groundTerrainData.size.z / 2f);
+	}
+
+	ATerrainGenerator getTerrainGenerator(int num) {
+
+	}
+	
+	void generateTerrain() {
+		TerrainData groundTerrainData 	= this.groundTerrain.terrainData;
+		TerrainData waterTerrainData 	= this.waterTerrain.terrainData;
+
+		setTerrainObjects();
+
+
+
+
+
 
 		TerrainGenerator generator = new BasicFiniteTerrain(numberFromString(this.generationSeed));
 		generator.setSize(res, res);
