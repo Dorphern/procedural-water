@@ -7,9 +7,10 @@ public abstract class TerrainGenerator {
 	// Terrain generation parameters
 	protected double frequency = 0.02d;
 	protected double lacunarity = 1.5d;
-	protected int octaves = 4;
+	protected int octaves = 3;
 	protected QualityMode quality = QualityMode.High;
 	protected double scale = 2d;
+	protected float heightScale = 0.25f;
 	protected RidgedMultifractal ridgedMultiFractal;
 
 
@@ -21,7 +22,7 @@ public abstract class TerrainGenerator {
 
 
 	protected float getBaseTerrainHeight(int x, int y) {
-		return (float)ridgedMultiFractal.GetValue(x * scale, y * scale, 0) * 0.25f + 0.2f;
+		return (float)ridgedMultiFractal.GetValue(x * scale, y * scale, 0) * heightScale + 0.3f;
 	}
 
 

@@ -5,7 +5,7 @@ using LibNoise.Unity.Generator;
 using LibNoise.Unity;
 
 
-public class MountainGenerator : ATerrainGenerator
+public class PillarGenerator : ATerrainGenerator
 {
 	// Terrain generation parameters
 	protected double frequency;
@@ -15,12 +15,14 @@ public class MountainGenerator : ATerrainGenerator
 	protected double scale;
 	protected float heightScale;
 
-	public MountainGenerator(int seed) : base(seed) {
+	public PillarGenerator(int seed) : base(seed) {
 		this.frequency = 0.02d;
 		this.lacunarity = 1.5d;
-		this.octaves = 4;
+		this.octaves = 3;
 		this.scale = 2d;
-		this.heightScale = 0.25f;
+		this.heightScale = 0.5f;
+
+
 	}
 }
 
