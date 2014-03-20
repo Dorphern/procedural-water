@@ -11,7 +11,7 @@ public abstract class ATerrainGenerator
 	protected double frequency;
 	protected double lacunarity;
 	protected int octaves;
-	protected QualityMode quality = QualityMode.High;;
+	protected QualityMode quality = QualityMode.High;
 	protected double scale;
 	protected RidgedMultifractal ridgedMultiFractal;
 
@@ -34,12 +34,12 @@ public abstract class ATerrainGenerator
 	}
 
 	public float GetHeight(int x, int y) {
-		this.ridgedMultiFractal = this.octaves;
+		this.ridgedMultiFractal.OctaveCount = this.octaves;
 		return TerrainValue(x, y);
 	}
 
 	public float GetRoughHeight(int x, int y, int octaves) {
-		ridgedMultiFractal.OctaveCount = octaves;
+		this.ridgedMultiFractal.OctaveCount = octaves;
 		return TerrainValue(x, y);
 	}
 }

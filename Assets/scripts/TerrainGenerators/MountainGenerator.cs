@@ -1,6 +1,9 @@
 using UnityEngine;
 using System.Collections;
 
+using LibNoise.Unity.Generator;
+using LibNoise.Unity;
+
 
 public class MountainGenerator : ATerrainGenerator
 {
