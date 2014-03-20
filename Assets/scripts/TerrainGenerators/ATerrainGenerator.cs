@@ -13,12 +13,16 @@ public abstract class ATerrainGenerator
 	protected int octaves;
 	protected QualityMode quality = QualityMode.High;
 	protected double scale;
+	protected float heightScale;
 	protected RidgedMultifractal ridgedMultiFractal;
 
 	protected int seed;
 
 	public ATerrainGenerator(int seed) {
 		this.seed = seed;
+	}
+
+	protected void setupGenerator() {
 		ridgedMultiFractal = new RidgedMultifractal(
 			this.frequency, 
 			this.lacunarity, 
@@ -28,9 +32,8 @@ public abstract class ATerrainGenerator
 		);
 	}
 
-
 	protected float TerrainValue(int x, int y) {
-		return (float) this.ridgedMultiFractal.GetValue(x * this.scale, y * this.scale, 0);
+		return (float) this.ridgedMultiFractal.GetValue(x * this.scale, y * this.scale, 0) * this.heightScale;
 	}
 
 	public float GetHeight(int x, int y) {

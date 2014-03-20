@@ -3,17 +3,16 @@ using System.Collections;
 using System.Text;
 
 public class TestControls : MonoBehaviour {
-	
-	[SerializeField] private float simSizeMin = 32f;
-	[SerializeField] private float simSizeMax = 256f;
 
 	private string generationSeed = "";
 	private float simulationSize = 1f;
-
+	private int terrainGenerator = 0;
+	private bool useInfiniteModifier = false;
+	[SerializeField] private float simSizeMin = 5f;
+	[SerializeField] private float simSizeMax = 10f;
 	[SerializeField] private Terrain groundTerrain;
 	[SerializeField] private Terrain waterTerrain;
 
-	[SerializeField] private ATerrainGenerator terrainGenerator[];
 
 	// Use this for initialization
 	void Start () {
@@ -25,14 +24,17 @@ public class TestControls : MonoBehaviour {
 		GUILayout.BeginArea(new Rect(0, 0, 200, 500));
 		GUILayout.BeginVertical("box");
 
-		GUILayout.Box("walla", GUILayout.Height(200));
+		//GUILayout.Box("walla", GUILayout.Height(200));
 		this.generationSeed = GUILayout.TextField(this.generationSeed);
-		this.simulationSize = GUILayout.HorizontalSlider(this.simulationSize, this.simSizeMin, this.simSizeMax);
-		if (GUILayout.Button("Generate!")) {
-			this.generateTerrain();
-		}
+		this.simulationSize = Mathf.Round(GUILayout.HorizontalSlider(this.simulationSize, this.simSizeMin, this.simSizeMax));
 
-		this.simulationSize = Mathf.Pow(2, Mathf.Round(Mathf.Log(this.simulationSize, 2)));
+		this.useInfiniteModifier = GUILayout.Toggle(this.useInfiniteModifier, " Infinite terrain");
+		this.terrainGenerator = (int)Mathf.Round(GUILayout.HorizontalSlider((float)this.terrainGenerator, 0, 2));
+
+
+
+
+		if (GUILayout.Button("Generate!")) { this.generateTerrain(); }
 
 		GUILayout.EndVertical();
 		GUILayout.EndArea();
@@ -52,7 +54,7 @@ public class TestControls : MonoBehaviour {
 		TerrainData groundTerrainData 	= this.groundTerrain.terrainData;
 		TerrainData waterTerrainData 	= this.waterTerrain.terrainData;
 
-		int res = (int)(this.simulationSize + 1f);
+		int res = (int)(Mathf.Pow(2, this.simulationSize) + 1f);
 		int size = res * 2;
 		
 		int height = 30;
@@ -69,8 +71,13 @@ public class TestControls : MonoBehaviour {
 				new Vector3(-groundTerrainData.size.x / 2f, 0f, -groundTerrainData.size.z / 2f);
 	}
 
-	ATerrainGenerator getTerrainGenerator(int num) {
-
+	ATerrainGenerator getTerrainGenerator(int num, int seed) {
+		switch (num) {
+			case 0: return new MountainGenerator(seed);
+			case 1: return new CanyonGenerator(seed);
+			case 2: return new PillarGenerator(seed);
+		}
+		return null;
 	}
 	
 	void generateTerrain() {
@@ -79,15 +86,22 @@ public class TestControls : MonoBehaviour {
 
 		setTerrainObjects();
 
+		int res = (int)(Mathf.Pow(2, this.simulationSize) + 1f);
+		int size = res * 2;
 
+		ATerrainGenerator generator = this.getTerrainGenerator(this.terrainGenerator, 
+		                                                       numberFromString(this.generationSeed));
+		ATerrainModifier modifier;
 
+		if (this.useInfiniteModifier) {
+			modifier = new InfiniteTerrainModifier(generator);
+		} else {
+			modifier = new FiniteTerrainModifier(generator);
+		}
 
-
-
-		TerrainGenerator generator = new BasicFiniteTerrain(numberFromString(this.generationSeed));
-		generator.setSize(res, res);
-		Heightmap groundHeightmap = generator.generateTerrain();
-		Heightmap waterHeightmap = generator.generateWater();
+		modifier.setSize(res, res);
+		Heightmap groundHeightmap = modifier.modifiedTerrain();
+		Heightmap waterHeightmap = modifier.modifiedWater();
 
 		groundTerrainData.SetHeights(0, 0, groundHeightmap.getHeights());
 		waterTerrainData.SetHeights(0, 0, waterHeightmap.getHeights());

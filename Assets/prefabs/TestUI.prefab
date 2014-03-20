@@ -38,8 +38,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b230777085b364bf295d5f53ec627720, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  simSizeMin: 32
-  simSizeMax: 128
+  simSizeMin: 5
+  simSizeMax: 10
   groundTerrain: {fileID: 0}
   waterTerrain: {fileID: 0}
 --- !u!1001 &100100000

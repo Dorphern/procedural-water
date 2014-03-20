@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+
 public abstract class ATerrainModifier {
 
 	protected int offsetX;
@@ -25,7 +26,7 @@ public abstract class ATerrainModifier {
 	}
 	
 	public void setScale(float s) {
-		this.scale = s;
+		//this.scale = s;
 	}
 
 	public abstract Heightmap modifiedWater();
