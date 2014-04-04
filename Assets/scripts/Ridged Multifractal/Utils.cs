@@ -280,6 +280,10 @@ namespace LibNoise.Unity
             return (n * (n * n * 60493 + 19990303) + 1376312589) & 0x7fffffff;
         }
 
+		internal static double BasicNoise3D(double x, double y, double z, long seed) {
+			return 0d;
+		}
+
         #endregion
     }
 }

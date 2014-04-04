@@ -31,9 +31,6 @@ public class TestControls : MonoBehaviour {
 		this.useInfiniteModifier = GUILayout.Toggle(this.useInfiniteModifier, " Infinite terrain");
 		this.terrainGenerator = (int)Mathf.Round(GUILayout.HorizontalSlider((float)this.terrainGenerator, 0, 2));
 
-
-
-
 		if (GUILayout.Button("Generate!")) { this.generateTerrain(); }
 
 		GUILayout.EndVertical();

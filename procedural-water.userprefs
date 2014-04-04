@@ -1,22 +1,28 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/scripts/TerrainGenerators/ATerrainGenerator.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/scripts/TerrainGenerators/MountainGenerator.cs">
     <Files>
-      <File FileName="Assets/scripts/TerrainGenerators/CanyonGenerator.cs" Line="18" Column="49" />
-      <File FileName="Assets/scripts/TestControls.cs" Line="32" Column="32" />
-      <File FileName="Assets/scripts/TerrainModifier/ATerrainModifier.cs" Line="15" Column="44" />
+      <File FileName="Assets/scripts/TerrainGenerators/CanyonGenerator.cs" Line="22" Column="48" />
+      <File FileName="Assets/scripts/TestControls.cs" Line="33" Column="1" />
+      <File FileName="Assets/scripts/TerrainModifier/ATerrainModifier.cs" Line="16" Column="3" />
       <File FileName="Assets/scripts/TerrainModifier/FiniteTerrainModifier.cs" Line="27" Column="53" />
-      <File FileName="Assets/scripts/TerrainGenerators/ATerrainGenerator.cs" Line="37" Column="28" />
+      <File FileName="Assets/scripts/TerrainGenerators/MountainGenerator.cs" Line="14" Column="20" />
+      <File FileName="Assets/scripts/TerrainGenerators/PillarGenerator.cs" Line="9" Column="2" />
+      <File FileName="Assets/scripts/TerrainGenerators/ATerrainGenerator.cs" Line="17" Column="33" />
+      <File FileName="Assets/scripts/Ridged Multifractal/Generator/RidgedMultifractal.cs" Line="150" Column="53" />
+      <File FileName="Assets/scripts/Ridged Multifractal/Generator/Perlin.cs" Line="126" Column="69" />
+      <File FileName="Assets/scripts/Ridged Multifractal/Utils.cs" Line="284" Column="14" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
           <Node name="Assembly-CSharp" expanded="True">
             <Node name="scripts" expanded="True">
-              <Node name="abstracts" expanded="True" />
-              <Node name="generators" expanded="True" />
+              <Node name="Ridged Multifractal" expanded="True">
+                <Node name="Generator" expanded="True" />
+              </Node>
               <Node name="TerrainGenerators" expanded="True">
-                <Node name="ATerrainGenerator.cs" selected="True" />
+                <Node name="MountainGenerator.cs" selected="True" />
               </Node>
               <Node name="TerrainModifier" expanded="True" />
             </Node>
