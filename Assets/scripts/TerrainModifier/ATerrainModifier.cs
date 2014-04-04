@@ -29,8 +29,20 @@ public abstract class ATerrainModifier {
 		//this.scale = s;
 	}
 
+	/** @return heightmap of the water in the terrain */
 	public abstract Heightmap modifiedWater();
-	
+
+	/** @return heightmap of the final modified terrain */
 	public abstract Heightmap modifiedTerrain();
+
+	/** @return "heightmap" of the slopes (degree of declination on tiles) */
+	public abstract Heightmap slopeMap();
+
+	/** @return "heightmap" of the errosion (amount of errosion on tiles) */
+	public abstract Heightmap errosionMap();
+
+	/** @return "heightmap" of the waterflow (water amount on different tiles */
+	public abstract Heightmap waterflowMap();
+
 
 }
