@@ -22,7 +22,6 @@ public class CanyonGenerator : ATerrainGenerator
 		float tVal = base.TerrainValue(x, y) * 2f - 1f;
 		tVal = Mathf.Round(tVal / 0.5f) * 0.5f;
 		return Mathf.Clamp(tVal, 0.1f, 1f);
-
 	}
 }
 
