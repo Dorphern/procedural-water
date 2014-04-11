@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Text;
 
@@ -19,6 +19,12 @@ public class TestControls : MonoBehaviour {
 	[SerializeField] private float simSizeMax = 10f;
 	[SerializeField] private Terrain groundTerrain;
 	[SerializeField] private Terrain waterTerrain;
+	[SerializeField] private float rainAmount = 0.1f;
+	[SerializeField] private float solubility = 0.01f;
+	[SerializeField] private float evaporation = 0.1f;
+	[SerializeField] private float sedimentCapacity = 0.03f;
+	[SerializeField] private int erosionGenerations = 7;
+	[SerializeField] private int erosionsPerGeneration = 7;
 
 
 	// Use this for initialization
@@ -154,6 +160,8 @@ public class TestControls : MonoBehaviour {
 		this.groundHeightmap = modifier.modifiedTerrain();
 		this.waterHeightmap = modifier.modifiedWater();
 
+		Erosion erosionController = new Erosion(this.groundHeightmap, this.rainAmount, this.solubility, this.evaporation, this.sedimentCapacity);
+		erosionController.ErodeTerrain(erosionGenerations, erosionsPerGeneration);
 		this.errosionMap = modifier.errosionMap();
 		this.waterflowMap = modifier.waterflowMap();
 
