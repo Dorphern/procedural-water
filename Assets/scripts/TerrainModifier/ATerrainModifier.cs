@@ -35,9 +35,6 @@ public abstract class ATerrainModifier {
 	/** @return heightmap of the final modified terrain */
 	public abstract Heightmap modifiedTerrain();
 
-	/** @return "heightmap" of the slopes (degree of declination on tiles) */
-	public abstract Heightmap slopeMap();
-
 	/** @return "heightmap" of the errosion (amount of errosion on tiles) */
 	public abstract Heightmap errosionMap();
 

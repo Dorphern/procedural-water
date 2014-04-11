@@ -31,10 +31,6 @@ public class FiniteTerrainModifier : ATerrainModifier {
 		return heightmap;
 	}
 
-	public override Heightmap slopeMap() {
-		return new Heightmap(this.width, this.height, 0.3f);
-	}
-
 	public override Heightmap errosionMap() {
 		return new Heightmap(this.width, this.height, 0.5f);
 	}
