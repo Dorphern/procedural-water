@@ -405,6 +405,12 @@ MonoBehaviour:
   simSizeMax: 10
   groundTerrain: {fileID: 2124083413}
   waterTerrain: {fileID: 515573097}
+  rainAmount: .100000001
+  solubility: .00999999978
+  evaporation: .100000001
+  sedimentCapacity: .0299999993
+  erosionGenerations: 7
+  erosionsPerGeneration: 7
 --- !u!4 &1777452383
 Transform:
   m_ObjectHideFlags: 0

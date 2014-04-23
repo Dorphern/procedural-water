@@ -19,6 +19,9 @@ public abstract class ATerrainGenerator
 
 	protected int seed;
 
+	protected int offsetX = 0;
+	protected int offsetY = 0;
+
 	public ATerrainGenerator(int seed) {
 		this.seed = seed;
 	}
@@ -42,12 +45,17 @@ public abstract class ATerrainGenerator
 	
 	public float GetHeight(int x, int y) {
 		this.perlin.OctaveCount = this.octaves;
-		return TerrainValue(x, y);
+		return TerrainValue(x + offsetX, y + offsetY);
 	}
 
 	public float GetRoughHeight(int x, int y, int octaves) {
 		this.perlin.OctaveCount = octaves;
-		return TerrainValue(x, y);
+		return TerrainValue(x + offsetX, y + offsetY);
+	}
+
+	public void setOffset(int x, int y) {
+		offsetX = x;
+		offsetY = y;
 	}
 }
 

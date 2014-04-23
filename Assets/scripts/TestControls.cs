@@ -2,11 +2,21 @@ using UnityEngine;
 using System.Collections;
 using System.Text;
 
+public struct ErosionOptions {
+	public float 	rainAmount,
+				 	solubility,
+				 	evaporation,
+					sedimentCapacity;
+	public int 		erosionGenerations,
+					erosionsPerGeneration;
+}
+
 public class TestControls : MonoBehaviour {
 
+	private TerrainMerger terrainMerger;
 	private Heightmap groundHeightmap;
 	private Heightmap waterHeightmap;
-	private Heightmap errosionMap;
+	private Heightmap erosionMap;
 	private Heightmap waterflowMap;
 
 	private string generationSeed = "";
@@ -15,10 +25,13 @@ public class TestControls : MonoBehaviour {
 	private int heatmap = 0; //0 - none, 1 - height, 2 - waterflow, 3 - errosion
 	private bool useInfiniteModifier = false;
 	private bool visualizeHeight = true;
+	private bool visualizeErosion = false;
+	private int mapSplits = 1;
 	[SerializeField] private float simSizeMin = 5f;
 	[SerializeField] private float simSizeMax = 10f;
 	[SerializeField] private Terrain groundTerrain;
 	[SerializeField] private Terrain waterTerrain;
+
 	[SerializeField] private float rainAmount = 0.1f;
 	[SerializeField] private float solubility = 0.01f;
 	[SerializeField] private float evaporation = 0.1f;
@@ -49,12 +62,26 @@ public class TestControls : MonoBehaviour {
 			GUILayout.EndVertical();
 		GUILayout.EndHorizontal();
 
+		GUILayout.BeginHorizontal();
+			GUILayout.BeginVertical(GUILayout.Width(80));
+				GUILayout.Label("Map Splits: ");
+			GUILayout.EndVertical();
+			GUILayout.BeginVertical();
+				this.mapSplits = (int)Mathf.Round(GUILayout.HorizontalSlider(this.mapSplits, 1f, 4f));
+			GUILayout.EndVertical();
+		GUILayout.EndHorizontal();
+
+		
 		this.useInfiniteModifier = GUILayout.Toggle(this.useInfiniteModifier, " Infinite terrain");
 
 		bool oldVisHeight = this.visualizeHeight;
 		this.visualizeHeight = GUILayout.Toggle(this.visualizeHeight, " Visualize height");
 
-		if (oldVisHeight != this.visualizeHeight) { this.updateTerrainVisualization(); }
+		bool oldVisErosion = this.visualizeErosion;
+		this.visualizeErosion = GUILayout.Toggle(this.visualizeErosion, " Visualize erosion");
+
+		if (oldVisHeight != this.visualizeHeight
+		    || oldVisErosion != this.visualizeErosion) { this.updateTerrainVisualization(); }
 
 		string type = "";
 		switch (this.heatmap) {
@@ -156,14 +183,34 @@ public class TestControls : MonoBehaviour {
 			modifier = new FiniteTerrainModifier(generator);
 		}
 
-		modifier.setSize(res, res);
-		this.groundHeightmap = modifier.modifiedTerrain();
-		this.waterHeightmap = modifier.modifiedWater();
+		ErosionOptions? erosionOptions = null;
+		if (this.visualizeErosion) {
+			erosionOptions = new ErosionOptions {
+				rainAmount 				= rainAmount,
+				solubility 				= solubility,
+				evaporation 			= evaporation,
+				sedimentCapacity 		= sedimentCapacity,
+				erosionGenerations		= erosionGenerations,
+				erosionsPerGeneration	= erosionsPerGeneration
+			};
+		}
 
-		Erosion erosionController = new Erosion(this.groundHeightmap, this.rainAmount, this.solubility, this.evaporation, this.sedimentCapacity);
-		erosionController.ErodeTerrain(erosionGenerations, erosionsPerGeneration);
-		this.errosionMap = modifier.errosionMap();
-		this.waterflowMap = modifier.waterflowMap();
+		TerrainMerger terrainMerger = new TerrainMerger(modifier, res, mapSplits);
+		terrainMerger.generate(erosionOptions, 0.05f);
+
+
+		//modifier.setSize(res, res);
+		this.groundHeightmap = terrainMerger.TerrainHeightmap();
+		this.waterHeightmap = terrainMerger.WaterHeightmap();
+
+		/*
+		if (this.visualizeErosion) {
+			Erosion erosionController = new Erosion(this.groundHeightmap, this.rainAmount, this.solubility, this.evaporation, this.sedimentCapacity);
+			erosionController.ErodeTerrain(erosionGenerations, erosionsPerGeneration);
+		}
+		*/
+		this.erosionMap = terrainMerger.ErosionHeightmap();
+		this.waterflowMap = terrainMerger.WaterflowHeightmap();
 
 		this.updateTerrainVisualization();
 	}
@@ -192,7 +239,7 @@ public class TestControls : MonoBehaviour {
 		switch(this.heatmap) {
 			case 1: heightmapViz = this.groundHeightmap; break;
 			case 2: heightmapViz = this.waterflowMap; break;
-			case 3: heightmapViz = this.errosionMap; break;
+			case 3: heightmapViz = this.erosionMap; break;
 		}
 
 		for (int x = 0; x < groundTerrainData.alphamapWidth; x++) {

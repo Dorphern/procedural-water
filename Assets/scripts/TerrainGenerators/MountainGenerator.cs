@@ -22,7 +22,7 @@ public class MountainGenerator : ATerrainGenerator
 	protected override float TerrainValue (int x, int y)
 	{
 		float tVal = base.TerrainValue(x, y);
-		tVal = Mathf.Abs(0.5f - tVal) * 2f + 0.1f;
+		tVal = Mathf.Abs(0.5f - tVal) * 2f;
 		return tVal;
 	}
 }

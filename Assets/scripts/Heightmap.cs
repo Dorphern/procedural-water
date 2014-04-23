@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using UnityEngine;
+using System.Collections;
 
 public class Heightmap {
 	
@@ -13,12 +14,32 @@ public class Heightmap {
 		heights = new float[width, height];
 	}
 
+	public Heightmap(int size) : this(size, size) { }
+
 	public Heightmap(int width, int height, float defaultValue) : this(height, width) {
 		for (int x = 0; x < width; x++) {
 			for (int y = 0; y < height; y++) {
 				heights[x, y] = defaultValue;
 			}
 		}
+	}
+
+	public void addOffset(int offX, int offY, Heightmap hm) {
+		for (int x = 0; x < hm.width; x++) {
+			for (int y = 0; y < hm.height; y++) {
+				heights[x + offX, y + offY] += hm.getHeight(x, y);
+			}
+		}
+	}
+
+	public Heightmap crop(int offX, int offY, int w, int h) {
+		Heightmap heightmap = new Heightmap(w, h);
+		for (int x = 0; x < w; x++) {
+			for (int y = 0; y < h; y++) {
+				heightmap.setHeight(x, y, heightmap.getHeight(offX + x, offY + y));
+			}
+		}
+		return heightmap;
 	}
 
 	public void setHeight(int x, int y, float value) {
