@@ -36,7 +36,7 @@ public class Heightmap {
 		Heightmap heightmap = new Heightmap(w, h);
 		for (int x = 0; x < w; x++) {
 			for (int y = 0; y < h; y++) {
-				heightmap.setHeight(x, y, heightmap.getHeight(offX + x, offY + y));
+				heightmap.setHeight(x, y, getHeight(offX + x, offY + y));
 			}
 		}
 		return heightmap;

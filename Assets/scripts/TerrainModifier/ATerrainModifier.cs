@@ -27,7 +27,7 @@ public abstract class ATerrainModifier {
 	public void setOffset(int x, int y) {
 		terrainGenerator.setOffset(x, y);
 	}
-	
+
 	public void setScale(float s) {
 		//this.scale = s;
 	}

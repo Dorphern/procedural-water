@@ -57,5 +57,13 @@ public abstract class ATerrainGenerator
 		offsetX = x;
 		offsetY = y;
 	}
+
+	public int getOffsetX() {
+		return offsetX;
+	}
+
+	public int getOffsetY() {
+		return offsetY;
+	}
 }
 

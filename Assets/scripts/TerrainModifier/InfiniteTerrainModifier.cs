@@ -3,31 +3,25 @@ using System.Collections;
 
 public class InfiniteTerrainModifier : ATerrainModifier {
 
+	FiniteTerrainModifier finiteTerrainModifier;
+
 	public InfiniteTerrainModifier(ATerrainGenerator tg) : base(tg) {
-		
+		finiteTerrainModifier = new FiniteTerrainModifier(tg);
 	}
 
 	public override void generate (ErosionOptions? erosionOptions, float waterAmount) {
-		initializeHeightmaps();
-		terrainHeightmap = new Heightmap(width, height);
-		
-		for (int x = 0; x < this.width; x++) {
-			for (int y = 0; y < this.width; y++) {
-				terrainHeightmap.setHeight(x, y, this.terrainGenerator.GetHeight(x, y));
-			}
-		}
-		
-		//applyWaterEffects(waterAmount);
-	}
-	
-	
-	private void initializeHeightmaps() {
-		terrainHeightmap 	= new Heightmap(width, height, 0.2f);
-		waterHeightmap 		= new Heightmap(width, height, 0.2f);
-		waterflowMap 		= new Heightmap(width, height, 0.2f);
-		erosionMap 			= new Heightmap(width, height, 0.2f);
-	}
+		int padding = 5;
+		finiteTerrainModifier.setSize(width + padding * 2, height + padding * 2);
 
+		finiteTerrainModifier.setOffset(terrainGenerator.getOffsetX() - padding, 
+		                                terrainGenerator.getOffsetY() - padding);
+		finiteTerrainModifier.generate(erosionOptions, waterAmount);
+
+		terrainHeightmap 	= finiteTerrainModifier.getTerrainHeightmap().crop(padding, padding, width, height);
+		waterHeightmap   	= finiteTerrainModifier.getWaterHeightmap().crop(padding, padding, width, height);
+		waterflowMap 		= finiteTerrainModifier.getWaterflowMap().crop(padding, padding, width, height);
+		erosionMap 			= finiteTerrainModifier.getErosionMap().crop(padding, padding, width, height);
+	}
 
 	/*
 	public override Heightmap modifiedWater() {
