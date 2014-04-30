@@ -1,18 +1,17 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/scripts/TerrainGenerators/MountainGenerator.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/scripts/TerrainModifier/InfiniteTerrainModifier.cs">
     <Files>
-      <File FileName="Assets/scripts/TerrainModifier/FiniteTerrainModifier.cs" Line="6" Column="2" />
+      <File FileName="Assets/scripts/TerrainModifier/FiniteTerrainModifier.cs" Line="18" Column="4" />
       <File FileName="Assets/scripts/Erosion/Erosion.cs" Line="88" Column="71" />
-      <File FileName="Assets/scripts/TestControls.cs" Line="175" Column="3" />
-      <File FileName="Assets/scripts/TerrainModifier/InfiniteTerrainModifier.cs" Line="30" Column="30" />
-      <File FileName="Assets/scripts/TerrainModifier/TerrainMerger.cs" Line="39" Column="30" />
-      <File FileName="Assets/scripts/Heightmap.cs" Line="23" Column="5" />
-      <File FileName="Assets/scripts/TerrainModifier/ATerrainModifier.cs" Line="34" Column="54" />
-      <File FileName="Assets/scripts/TerrainGenerators/ATerrainGenerator.cs" Line="49" Column="3" />
-      <File FileName="Assets/scripts/TerrainGenerators/CanyonGenerator.cs" Line="24" Column="32" />
-      <File FileName="Assets/scripts/TerrainGenerators/MountainGenerator.cs" Line="10" Column="2" />
-      <File FileName="Assets/scripts/TerrainGenerators/PillarGenerator.cs" Line="18" Column="3" />
+      <File FileName="Assets/scripts/TestControls.cs" Line="199" Column="1" />
+      <File FileName="Assets/scripts/TerrainModifier/InfiniteTerrainModifier.cs" Line="13" Column="18" />
+      <File FileName="Assets/scripts/TerrainModifier/TerrainMerger.cs" Line="42" Column="48" />
+      <File FileName="Assets/scripts/Heightmap.cs" Line="39" Column="31" />
+      <File FileName="Assets/scripts/TerrainModifier/ATerrainModifier.cs" Line="29" Column="3" />
+      <File FileName="Assets/scripts/TerrainGenerators/ATerrainGenerator.cs" Line="66" Column="18" />
+      <File FileName="Assets/scripts/TerrainGenerators/CanyonGenerator.cs" Line="1" Column="1" />
+      <File FileName="Assets/scripts/TerrainGenerators/PillarGenerator.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

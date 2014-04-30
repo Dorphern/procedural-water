@@ -2,15 +2,6 @@ using UnityEngine;
 using System.Collections;
 using System.Text;
 
-public struct ErosionOptions {
-	public float 	rainAmount,
-				 	solubility,
-				 	evaporation,
-					sedimentCapacity;
-	public int 		erosionGenerations,
-					erosionsPerGeneration;
-}
-
 public class TestControls : MonoBehaviour {
 
 	private TerrainMerger terrainMerger;

@@ -1,6 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+public struct ErosionOptions {
+	public float 	rainAmount,
+					solubility,
+					evaporation,
+					sedimentCapacity;
+	public int 		erosionGenerations,
+					erosionsPerGeneration;
+}
+
 
 public abstract class ATerrainModifier {
 	
@@ -9,11 +18,11 @@ public abstract class ATerrainModifier {
 
 	protected ATerrainGenerator terrainGenerator;
 
-	protected Heightmap terrainHeightmap;
-	protected Heightmap waterHeightmap;
+	protected Heightmap terrainHeightmap;		// Final terrain heightmap (initial terrain + erosion)
+	protected Heightmap waterHeightmap; 		// Final water heightmap (waterflow + terrain)
 
-	protected Heightmap waterflowMap;
-	protected Heightmap erosionMap;
+	protected Heightmap waterflowMap;			// Water amount on different points (for water)
+	protected Heightmap erosionMap;				// Difference in original terrain on points
 
 	public ATerrainModifier(ATerrainGenerator terrainGenerator) {
 		this.terrainGenerator = terrainGenerator;

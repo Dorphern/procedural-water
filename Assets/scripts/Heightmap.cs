@@ -16,6 +16,8 @@ public class Heightmap {
 
 	public Heightmap(int size) : this(size, size) { }
 
+	public Heightmap(int size, float defaultValue) : this(size, size, defaultValue) { }
+
 	public Heightmap(int width, int height, float defaultValue) : this(height, width) {
 		for (int x = 0; x < width; x++) {
 			for (int y = 0; y < height; y++) {
