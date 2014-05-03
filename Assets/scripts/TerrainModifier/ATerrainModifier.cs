@@ -6,7 +6,7 @@ public struct ErosionOptions {
 					solubility,
 					evaporation,
 					sedimentCapacity;
-	public int 		erosionGenerations,
+	public int 		generations,
 					erosionsPerGeneration;
 }
 
@@ -43,7 +43,7 @@ public abstract class ATerrainModifier {
 
 
 	/** Generate the the whole terrain */
-	public abstract void generate(ErosionOptions? erosionOptions, float waterAmount);
+	public abstract void generate(ErosionOptions? erosionOptions, int time, float waterAmount);
 
 
 	public Heightmap getTerrainHeightmap() {

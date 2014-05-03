@@ -46,7 +46,7 @@ public class Erosion {
 			/* 1: Rainfall */
 			ApplyRain();
 			/* 2: Erosion */
-			for(int e = 0; e < erosionPerGeneration; e++)
+			for(int e = 0; e < 7; e++)
 			{
 				ApplyErosion();
 			}

@@ -48,6 +48,11 @@ public class Heightmap {
 		heights[x, y] = value;
 	}
 
+	public float addHeight(int x, int y, float value) {
+		heights[x, y] += value;
+		return heights[x, y];
+	}
+
 	public float getHeight(int x, int y) {
 		return heights[x, y];
 	}

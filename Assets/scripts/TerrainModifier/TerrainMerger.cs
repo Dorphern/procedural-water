@@ -20,7 +20,7 @@ public class TerrainMerger  {
 		this.splits		= (int)Mathf.Pow(2, (splits - 1)); 
 	}
 
-	public void generate(ErosionOptions? erosionOptions, float waterAmount) {
+	public void generate(ErosionOptions? erosionOptions, int time, float waterAmount) {
 		int chunkSize = size / splits;
 		if (splits != 1) chunkSize /= 2;
 
@@ -37,7 +37,7 @@ public class TerrainMerger  {
 		for (int x = 0; x < size; x += chunkSize) {
 			for (int y = 0; y < size; y += chunkSize) {
 				modifier.setOffset(x, y);
-				modifier.generate(erosionOptions, waterAmount);
+				modifier.generate(erosionOptions, time, waterAmount);
 
 				terrainHeightmap.addOffset(x, y, modifier.getTerrainHeightmap());
 				waterHeightmap.addOffset(x, y, modifier.getWaterHeightmap());

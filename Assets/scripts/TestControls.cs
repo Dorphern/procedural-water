@@ -27,8 +27,11 @@ public class TestControls : MonoBehaviour {
 	[SerializeField] private float solubility = 0.01f;
 	[SerializeField] private float evaporation = 0.1f;
 	[SerializeField] private float sedimentCapacity = 0.03f;
-	[SerializeField] private int erosionGenerations = 7;
+	[SerializeField] private int generations = 7;
 	[SerializeField] private int erosionsPerGeneration = 7;
+
+	[SerializeField] private float waterAmount = 0.1f;
+	[SerializeField] private int time = 5;
 
 
 	// Use this for initialization
@@ -181,25 +184,24 @@ public class TestControls : MonoBehaviour {
 				solubility 				= solubility,
 				evaporation 			= evaporation,
 				sedimentCapacity 		= sedimentCapacity,
-				erosionGenerations		= erosionGenerations,
+				generations 			= generations,
 				erosionsPerGeneration	= erosionsPerGeneration
 			};
 		}
 
 		TerrainMerger terrainMerger = new TerrainMerger(modifier, res, mapSplits);
-		terrainMerger.generate(erosionOptions, 0.05f);
+		terrainMerger.generate(erosionOptions, time, waterAmount);
 
 
 		//modifier.setSize(res, res);
 		this.groundHeightmap = terrainMerger.TerrainHeightmap();
 		this.waterHeightmap = terrainMerger.WaterHeightmap();
 
-		/*
-		if (this.visualizeErosion) {
-			Erosion erosionController = new Erosion(this.groundHeightmap, this.rainAmount, this.solubility, this.evaporation, this.sedimentCapacity);
-			erosionController.ErodeTerrain(erosionGenerations, erosionsPerGeneration);
-		}
-		*/
+
+		//Erosion erosionController = new Erosion(this.groundHeightmap, this.rainAmount, this.solubility, this.evaporation, this.sedimentCapacity);
+		//erosionController.ErodeTerrain(generations, erosionsPerGeneration);
+
+
 		this.erosionMap = terrainMerger.ErosionHeightmap();
 		this.waterflowMap = terrainMerger.WaterflowHeightmap();
 
