@@ -44,13 +44,14 @@ public abstract class ATerrainGenerator
 	}
 	
 	public float GetHeight(int x, int y) {
-		this.perlin.OctaveCount = this.octaves;
 		return TerrainValue(x + offsetX, y + offsetY);
 	}
 
-	public float GetRoughHeight(int x, int y, int octaves) {
-		this.perlin.OctaveCount = octaves;
-		return TerrainValue(x + offsetX, y + offsetY);
+	public virtual float GetRoughHeight(int x, int y, int zoomLevel) {
+		float v = TerrainValue(x + offsetX, y + offsetY);
+
+
+		return v;
 	}
 
 	public void setOffset(int x, int y) {

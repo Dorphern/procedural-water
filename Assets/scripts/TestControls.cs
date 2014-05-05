@@ -94,7 +94,7 @@ public class TestControls : MonoBehaviour {
 				GUILayout.Label("Generator: ");
 			GUILayout.EndVertical();
 			GUILayout.BeginVertical();
-				this.terrainGenerator = (int)Mathf.Round(GUILayout.HorizontalSlider((float)this.terrainGenerator, 0, 2));
+				this.terrainGenerator = (int)Mathf.Round(GUILayout.HorizontalSlider((float)this.terrainGenerator, 0, 3));
 			GUILayout.EndVertical();
 		GUILayout.EndHorizontal();
 
@@ -121,7 +121,7 @@ public class TestControls : MonoBehaviour {
 		int res = (int)(Mathf.Pow(2, this.simulationSize) + 1f);
 		int size = res * 2;
 		
-		int height = 30;
+		int height = 200;
 		
 		groundTerrainData.alphamapResolution 	= waterTerrainData.alphamapResolution 	= res;
 		groundTerrainData.heightmapResolution 	= waterTerrainData.heightmapResolution 	= res;
@@ -140,6 +140,7 @@ public class TestControls : MonoBehaviour {
 			case 0: return new MountainGenerator(seed);
 			case 1: return new CanyonGenerator(seed);
 			case 2: return new PillarGenerator(seed);
+			case 3: return new HeightmapGenerator(seed);
 		}
 		return null;
 	}
@@ -172,7 +173,7 @@ public class TestControls : MonoBehaviour {
 		ATerrainModifier modifier;
 
 		if (this.useInfiniteModifier) {
-			modifier = new InfiniteTerrainModifier(generator);
+			modifier = new OptimizedInfiniteModifier(generator);
 		} else {
 			modifier = new FiniteTerrainModifier(generator);
 		}

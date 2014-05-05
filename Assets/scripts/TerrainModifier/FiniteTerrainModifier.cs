@@ -61,11 +61,11 @@ public class FiniteTerrainModifier : ATerrainModifier {
 				// Apply rain (water) to every tile
 				waterflowMap.addHeight(x, y, erosionOptions.rainAmount);
 
-				erode = erosionOptions.solubility * erosionOptions.erosionsPerGeneration;
+				erode = erosionOptions.solubility;// * erosionOptions.erosionsPerGeneration;
 				maxCapacity = waterflowMap.getHeight(x, y) * erosionOptions.sedimentCapacity;
 
 				// Erode max
-				if (sedimentLevel.getHeight(x, y) + erosionOptions.solubility < maxCapacity)
+				if (sedimentLevel.getHeight(x, y) + erosionOptions.solubility > maxCapacity)
 					erode = maxCapacity - sedimentLevel.getHeight(x, y);
 
 				erosionMap.addHeight(x, y, -erode);
