@@ -48,7 +48,6 @@ public abstract class ATerrainGenerator
 
 
 	public virtual float GetRoughHeight(float x, float y, int zoomLevel) {
-		float v = TerrainValue(x + offsetX, y + offsetY);
 		int usedX = Mathf.FloorToInt((x + offsetX) * Mathf.Pow (0.5f, (float)zoomLevel));
 		int usedY = Mathf.FloorToInt((y + offsetY) * Mathf.Pow (0.5f, (float)zoomLevel));
 		float v = TerrainValue(usedX, usedY);
