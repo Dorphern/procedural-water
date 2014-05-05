@@ -9,11 +9,11 @@ public class MountainGenerator : ATerrainGenerator
 {
 
 	public MountainGenerator(int seed) : base(seed) {
-		this.frequency = 0.02d;
-		this.persistence = 0.8d;
+		this.frequency = 0.01d;
+		this.persistence = 0.5d;
 		this.lacunarity = 1.5d;
-		this.octaves = 4;
-		this.scale = 2d;
+		this.octaves = 2;
+		this.scale = 0.5d;
 		this.heightScale = 0.5f;
 
 		this.setupGenerator();
