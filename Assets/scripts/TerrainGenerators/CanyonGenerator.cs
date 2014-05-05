@@ -11,17 +11,17 @@ public class CanyonGenerator : ATerrainGenerator
 	public CanyonGenerator(int seed) : base(seed) {
 		this.frequency = 0.1d;
 		this.persistence = 0.7d;
-		this.octaves = 2;
+		this.octaves = 3;
 		this.scale = 0.2d;
 
 		this.setupGenerator();
 	}
 
-	protected override float TerrainValue (int x, int y)
+	protected override float TerrainValue (float x, float y)
 	{
-		float tVal = base.TerrainValue(x, y) * 2f - 1f;
-		tVal = Mathf.Round(tVal / 0.5f) * 0.5f;
-		return Mathf.Clamp(tVal, 0.0f, 1f);
+		float tVal = base.TerrainValue(x, y);
+		tVal = Mathf.Round(tVal / 0.25f) * 0.25f;
+		return Mathf.Clamp(tVal, 0.0f, 0.75f);
 	}
 }
 

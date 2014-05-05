@@ -9,21 +9,22 @@ public class MountainGenerator : ATerrainGenerator
 {
 
 	public MountainGenerator(int seed) : base(seed) {
-		this.frequency = 0.01d;
+		this.frequency = 0.03d;
 		this.persistence = 0.5d;
-		this.lacunarity = 1.5d;
-		this.octaves = 2;
+		this.lacunarity = 1.4d;
 		this.scale = 0.5d;
 		this.heightScale = 0.5f;
 
 		this.setupGenerator();
 	}
 
-	protected override float TerrainValue (int x, int y)
+	protected override float TerrainValue (float x, float y)
 	{
-		float tVal = base.TerrainValue(x, y);
-		tVal = Mathf.Abs(0.5f - tVal) * 2f;
-		return tVal;
+		this.octaves = 4;
+		float tVal = - Mathf.Abs(0.5f - base.TerrainValue(x, y));
+		this.octaves = 2;
+		float vVal = 0.5f - Mathf.Abs(0.5f - base.TerrainValue(-x * .3f, -y * 0.3f)) * 2f;
+		return (vVal - 0.3f) * tVal * 4f + vVal * 2f;
 	}
 }
 

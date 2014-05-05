@@ -15,10 +15,10 @@ public class HeightmapGenerator : ATerrainGenerator
 		setupGenerator();
 	}
 	
-	protected override float TerrainValue (int x, int y) {
+	protected override float TerrainValue (float x, float y) {
 		if (x < 0 || y < 0 || x > heightmap.width || y > heightmap.height) return 0;
 
-		return heightmap.GetPixel(x, y).r;
+		return heightmap.GetPixel((int) x, (int) y).r;
 	}
 }
 

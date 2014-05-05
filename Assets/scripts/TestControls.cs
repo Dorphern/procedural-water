@@ -139,7 +139,7 @@ public class TestControls : MonoBehaviour {
 		switch (num) {
 			case 0: return new MountainGenerator(seed);
 			case 1: return new CanyonGenerator(seed);
-			case 2: return new PillarGenerator(seed);
+			case 2: return new LakeGenerator(seed);
 			case 3: return new HeightmapGenerator(seed);
 		}
 		return null;
