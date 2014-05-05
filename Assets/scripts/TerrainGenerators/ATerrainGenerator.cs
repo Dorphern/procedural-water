@@ -36,7 +36,6 @@ public abstract class ATerrainGenerator
 			this.quality
 		);
 	}
-
 	protected virtual float TerrainValue(float x, float y) {
 		float v = (float) this.perlin.GetValue(x * this.scale, y * this.scale, 0) * this.heightScale;
 		v = (v + 1f) / 2f;
@@ -47,9 +46,12 @@ public abstract class ATerrainGenerator
 		return TerrainValue(x + offsetX, y + offsetY);
 	}
 
+
 	public virtual float GetRoughHeight(float x, float y, int zoomLevel) {
 		float v = TerrainValue(x + offsetX, y + offsetY);
-
+		int usedX = Mathf.FloorToInt((x + offsetX) * Mathf.Pow (0.5f, (float)zoomLevel));
+		int usedY = Mathf.FloorToInt((y + offsetY) * Mathf.Pow (0.5f, (float)zoomLevel));
+		float v = TerrainValue(usedX, usedY);
 
 		return v;
 	}
