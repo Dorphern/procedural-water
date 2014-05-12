@@ -24,6 +24,8 @@ public abstract class ATerrainModifier {
 	protected Heightmap waterflowMap;			// Water amount on different points (for water)
 	protected Heightmap erosionMap;				// Difference in original terrain on points
 
+	protected float[,] accumulatedHeights;		// Dynamic table containing the accumulated heighs across the terrain, used to find average heights.
+
 	public ATerrainModifier(ATerrainGenerator terrainGenerator) {
 		this.terrainGenerator = terrainGenerator;
 	}
@@ -62,6 +64,9 @@ public abstract class ATerrainModifier {
 		return erosionMap;
 	}
 
+	public float GetAverageAreaHeight(int x, int y, int width, int height) {
+		return (this.accumulatedHeights[x + width, y + height] - this.accumulatedHeights[x, y]) / (width * height);
+	}
 
 	/** @return heightmap of the water in the terrain */
 	//public abstract Heightmap modifiedWater();
