@@ -64,8 +64,33 @@ public abstract class ATerrainModifier {
 		return erosionMap;
 	}
 
-	public float GetAverageAreaHeight(int x, int y, int width, int height) {
-		return (this.accumulatedHeights[x + width, y + height] - this.accumulatedHeights[x, y]) / (width * height);
+	public float GetAverageAreaHeight(int x, int y, int w, int h) {
+		float numb = 0;
+		for (int i = x; i < w + x; i++){
+			for (int j = y; j < h + y; j++){
+				numb += terrainHeightmap.getHeight(i, j);
+			}
+		}
+		numb /= w * h;
+		float accu = (this.accumulatedHeights[x + w, y + h] - this.accumulatedHeights[x, y]) / (w * h);
+		Debug.Log ("actual: " + numb + ", accu: " + accu);
+		return accu;
+	}
+
+	protected void createAccumulatedMap() {
+		// Set accumulated heigthmap
+		accumulatedHeights = new float[width,height];
+		for (int x = 0; x < this.width; x++) {
+			for (int y = 0; y < this.width; y++) {
+				accumulatedHeights[x, y] = terrainHeightmap.getHeight(x, y);// + erosionMap.getHeight(x, y);
+				if (x > 0)
+					accumulatedHeights[x, y] += accumulatedHeights[x-1, y];
+				if (y > 0)
+					accumulatedHeights[x, y] += accumulatedHeights[x, y-1];		
+				if (x > 0 && y > 0)
+					accumulatedHeights[x, y] -= accumulatedHeights[x-1, y-1];	
+			}
+		}
 	}
 
 	/** @return heightmap of the water in the terrain */

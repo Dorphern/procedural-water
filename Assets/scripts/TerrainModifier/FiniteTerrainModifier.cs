@@ -152,20 +152,8 @@ public class FiniteTerrainModifier : ATerrainModifier {
 				waterHeightmap.setHeight(x, y, wh - 0.1f);
 			}
 		}
-		
-		// Set accumulated heigthmap
-		accumulatedHeights = new float[width,height];
-		for (int x = 0; x < this.width; x++) {
-			for (int y = 0; y < this.width; y++) {
-				accumulatedHeights[x, y] = terrainHeightmap.getHeight(x, y) + erosionMap.getHeight(x, y);
-				if (x > 0)
-					accumulatedHeights[x, y] += accumulatedHeights[x-1, y];
-				if (y > 0)
-					accumulatedHeights[x, y] += accumulatedHeights[x, y-1];		
-				if (x > 0 && y > 0)
-					accumulatedHeights[x, y] -= accumulatedHeights[x-1, y-1];	
-			}
-		}
+
+		createAccumulatedMap();
 	}
 
 	/**
