@@ -25,6 +25,8 @@ public abstract class ATerrainModifier {
 	protected Heightmap erosionMap;				// Difference in original terrain on points
 
 	protected float[,] accumulatedHeights;		// Dynamic table containing the accumulated heighs across the terrain, used to find average heights.
+	protected Heightmap accHeights;
+
 
 	public ATerrainModifier(ATerrainGenerator terrainGenerator) {
 		this.terrainGenerator = terrainGenerator;
@@ -65,30 +67,40 @@ public abstract class ATerrainModifier {
 	}
 
 	public float GetAverageAreaHeight(int x, int y, int w, int h) {
-		float numb = 0;
-		for (int i = x; i < w + x; i++){
-			for (int j = y; j < h + y; j++){
+		w--;
+		h--;
+		/*float numb = 0;
+		for (int i = x; i <= w + x; i++){
+			for (int j = y; j <= h + y; j++){
 				numb += terrainHeightmap.getHeight(i, j);
 			}
 		}
 		numb /= w * h;
-		float accu = (this.accumulatedHeights[x + w, y + h] - this.accumulatedHeights[x, y]) / (w * h);
-		Debug.Log ("actual: " + numb + ", accu: " + accu);
+*/
+		float horizental = 0; 
+		float vertical = 0; 
+		float b = 0;
+
+		if (y > 0) horizental = accHeights.getHeight (x + w, y - 1);
+		if (x > 0) vertical = accHeights.getHeight (x - 1, y + h);
+		if (x > 0 && y > 0) b = accHeights.getHeight (x - 1, y - 1);
+
+		float acc = accHeights.getHeight (x + w, y + h);
+
+		float accu = (acc - horizental - vertical + b) / (w * h);
+		//Debug.Log ("actual: " + numb + ", accu: " + accu);
 		return accu;
 	}
 
 	protected void createAccumulatedMap() {
 		// Set accumulated heigthmap
-		accumulatedHeights = new float[width,height];
+		accHeights = new Heightmap(width, height, 0f);
 		for (int x = 0; x < this.width; x++) {
 			for (int y = 0; y < this.width; y++) {
-				accumulatedHeights[x, y] = terrainHeightmap.getHeight(x, y);// + erosionMap.getHeight(x, y);
-				if (x > 0)
-					accumulatedHeights[x, y] += accumulatedHeights[x-1, y];
-				if (y > 0)
-					accumulatedHeights[x, y] += accumulatedHeights[x, y-1];		
-				if (x > 0 && y > 0)
-					accumulatedHeights[x, y] -= accumulatedHeights[x-1, y-1];	
+				accHeights.setHeight(x, y, terrainHeightmap.getHeight(x, y));// + erosionMap.getHeight(x, y);
+				if (x > 0) accHeights.addHeight(x, y, accHeights.getHeight(x-1, y));
+                if (y > 0) accHeights.addHeight(x, y, accHeights.getHeight(x, y-1));		
+                if (x > 0 && y > 0) accHeights.addHeight(x, y, -accHeights.getHeight(x-1, y-1));	
 			}
 		}
 	}

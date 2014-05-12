@@ -9,7 +9,7 @@ public class OptimizedInfiniteModifier : ATerrainModifier {
 	private int workingZoom = 0;
 
 	public OptimizedInfiniteModifier(ATerrainGenerator tg) : base(tg) { 
-		maxZoomLevel =  6;
+		maxZoomLevel = 6;
 	}
 
 
@@ -48,7 +48,7 @@ public class OptimizedInfiniteModifier : ATerrainModifier {
 	private void applyWaterEffects (int time, float waterAmount) {
 		waterflowMap = new Heightmap(width, height, waterAmount);
 
-		moveWaterOnZoom(maxZoomLevel);
+		moveWaterOnZoom(2);
 	}
 	
 
@@ -60,11 +60,11 @@ public class OptimizedInfiniteModifier : ATerrainModifier {
 
 		int hsteps = (int) (width / getZoomSize());
 		int vsteps = (int) (height / getZoomSize());
-		Debug.Log ( "steps: " + hsteps + " x " + vsteps);
+		//Debug.Log ( "steps: " + hsteps + " x " + vsteps);
 
 		for (int x = 0; x < hsteps; x++) {
 			for (int y = 0; y < vsteps; y++) {
-				Debug.Log ("step!");
+				//Debug.Log ("step!");
 				int dirIndex = waterDirection(x, y);
 
 				if (dirIndex == -1) continue;
@@ -91,7 +91,7 @@ public class OptimizedInfiniteModifier : ATerrainModifier {
 					fromAmount = tw / 2f;
 				}
 
-				Debug.Log ("moving: " + (toAmount - fromAmount));
+				//Debug.Log ("moving: " + (toAmount - fromAmount));
 
 				setZoomWaterHeight(x, y, fromAmount);
 				setZoomWaterHeight(tx, ty, toAmount);
@@ -120,8 +120,8 @@ public class OptimizedInfiniteModifier : ATerrainModifier {
 	private float getZoomTerrainHeight (int x, int y) {
 		return GetAverageAreaHeight(zoomToRealCoord(x), 
 		                            zoomToRealCoord(y),
-		                            getZoomSize() - 1,
-		                            getZoomSize() - 1);
+		                            getZoomSize(),
+		                            getZoomSize());
 	}
 
 	private float getZoomHeight (int x, int y) {
