@@ -174,6 +174,7 @@ public class TestControls : MonoBehaviour {
 
 		if (this.useInfiniteModifier) {
 			modifier = new OptimizedInfiniteModifier(generator);
+			//modifier = new InfiniteTerrainModifier(generator);
 		} else {
 			modifier = new FiniteTerrainModifier(generator);
 		}

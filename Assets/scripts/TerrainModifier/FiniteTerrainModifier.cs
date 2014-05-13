@@ -149,7 +149,7 @@ public class FiniteTerrainModifier : ATerrainModifier {
 
 				// Set water heightmap
 				float wh = th + waterflowMap.getHeight(x, y);
-				waterHeightmap.setHeight(x, y, wh - 0.1f);
+				waterHeightmap.setHeight(x, y, wh);
 			}
 		}
 

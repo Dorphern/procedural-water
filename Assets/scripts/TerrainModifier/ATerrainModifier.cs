@@ -87,8 +87,8 @@ public abstract class ATerrainModifier {
 
 		float acc = accHeights.getHeight (x + w, y + h);
 
-		float accu = (acc - horizental - vertical + b) / (w * h);
-		//Debug.Log ("actual: " + numb + ", accu: " + accu);
+		float accu = (acc - horizental - vertical + b) / ((w + 1) * (h + 1));
+
 		return accu;
 	}
 

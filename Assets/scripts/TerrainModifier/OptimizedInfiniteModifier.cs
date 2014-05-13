@@ -40,7 +40,7 @@ public class OptimizedInfiniteModifier : ATerrainModifier {
 				
 				// Set water heightmap
 				float wh = terrainHeightmap.getHeight(x, y) + waterflowMap.getHeight(x, y);
-				waterHeightmap.setHeight(x, y, wh);
+				waterHeightmap.setHeight(x, y, wh - 0.05f);
 			}
 		}
 	}
@@ -48,7 +48,19 @@ public class OptimizedInfiniteModifier : ATerrainModifier {
 	private void applyWaterEffects (int time, float waterAmount) {
 		waterflowMap = new Heightmap(width, height, waterAmount);
 
+		workingZoom = 1;
+		int wDir = waterDirection(3, 3);
+		Debug.Log ("terrain height: " + getZoomTerrainHeight(3, 3));
+		Debug.Log ("water height: " + getZoomWaterHeight(3, 3));
+		Debug.Log("dir: " + wDir);
+
+		moveWaterOnZoom(7);
+		moveWaterOnZoom(6);
+		moveWaterOnZoom(5);
+		moveWaterOnZoom(4);
+		moveWaterOnZoom(3);
 		moveWaterOnZoom(2);
+		moveWaterOnZoom(1);
 	}
 	
 
@@ -60,7 +72,6 @@ public class OptimizedInfiniteModifier : ATerrainModifier {
 
 		int hsteps = (int) (width / getZoomSize());
 		int vsteps = (int) (height / getZoomSize());
-		//Debug.Log ( "steps: " + hsteps + " x " + vsteps);
 
 		for (int x = 0; x < hsteps; x++) {
 			for (int y = 0; y < vsteps; y++) {
@@ -86,12 +97,12 @@ public class OptimizedInfiniteModifier : ATerrainModifier {
 					toAmount = totalWater;
 				} else {
 					// All water is split amongst the tiles
-					float tw = totalWater - diff;
-					toAmount = diff + tw / 2f;
-					fromAmount = tw / 2f;
+					float moving = ((fromAmount - toAmount) + diff) / 2f;
+					fromAmount -= moving;
+					toAmount += moving;
 				}
 
-				//Debug.Log ("moving: " + (toAmount - fromAmount));
+
 
 				setZoomWaterHeight(x, y, fromAmount);
 				setZoomWaterHeight(tx, ty, toAmount);
@@ -122,6 +133,7 @@ public class OptimizedInfiniteModifier : ATerrainModifier {
 		                            zoomToRealCoord(y),
 		                            getZoomSize(),
 		                            getZoomSize());
+		//return terrainGenerator.GetHeight(x, y);
 	}
 
 	private float getZoomHeight (int x, int y) {
@@ -156,7 +168,6 @@ public class OptimizedInfiniteModifier : ATerrainModifier {
 			
 			float height = getZoomHeight(dx, dy);
 
-			//Debug.Log ("COMP: " + height + " < " + currHeight);
 			if (height < currHeight) {
 				currHeight = height;
 				neighbourIndex = i;
