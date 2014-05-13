@@ -3,7 +3,10 @@ using System.Collections;
 
 public class OptimizedInfiniteModifier : ATerrainModifier {
 
-	int[] tileNeighbours = { 0,1,  0,-1,  1,0,  -1,0,  1,1,  1,-1,  -1,1,  -1,-1};
+	int[] tileNeighbours = { 
+		0,1,  0,-1,  1,0,  -1,0,  
+		1,1,  1,-1,  -1,1,  -1,-1
+	};
 	int maxZoomLevel = 0;
 
 	private int workingZoom = 0;
@@ -40,7 +43,7 @@ public class OptimizedInfiniteModifier : ATerrainModifier {
 				
 				// Set water heightmap
 				float wh = terrainHeightmap.getHeight(x, y) + waterflowMap.getHeight(x, y);
-				waterHeightmap.setHeight(x, y, wh - 0.05f);
+				waterHeightmap.setHeight(x, y, wh - 0.01f);
 			}
 		}
 	}
@@ -48,12 +51,15 @@ public class OptimizedInfiniteModifier : ATerrainModifier {
 	private void applyWaterEffects (int time, float waterAmount) {
 		waterflowMap = new Heightmap(width, height, waterAmount);
 
-		workingZoom = 1;
-		int wDir = waterDirection(3, 3);
-		Debug.Log ("terrain height: " + getZoomTerrainHeight(3, 3));
-		Debug.Log ("water height: " + getZoomWaterHeight(3, 3));
-		Debug.Log("dir: " + wDir);
+		/*workingZoom = 1;
+		Debug.Log ("size: " + (width / getZoomSize()));
+		int wDir = waterDirection(1020, 1020);
 
+		//Debug.Log ("terrain height: " + getZoomTerrainHeight(3, 3));
+		//Debug.Log ("water height: " + getZoomWaterHeight(3, 3));
+		Debug.Log("dir: " + wDir);*/
+
+		moveWaterOnZoom(8);
 		moveWaterOnZoom(7);
 		moveWaterOnZoom(6);
 		moveWaterOnZoom(5);
@@ -62,9 +68,6 @@ public class OptimizedInfiniteModifier : ATerrainModifier {
 		moveWaterOnZoom(2);
 		moveWaterOnZoom(1);
 	}
-	
-
-
 
 	private void moveWaterOnZoom (int zoom) {
 		workingZoom = zoom;
@@ -129,11 +132,14 @@ public class OptimizedInfiniteModifier : ATerrainModifier {
 	}
 
 	private float getZoomTerrainHeight (int x, int y) {
-		return GetAverageAreaHeight(zoomToRealCoord(x), 
-		                            zoomToRealCoord(y),
-		                            getZoomSize(),
-		                            getZoomSize());
-		//return terrainGenerator.GetHeight(x, y);
+		if (workingZoom == 111) {
+			return terrainGenerator.GetHeight(x, y);
+		} else {
+			return GetAverageAreaHeight(zoomToRealCoord(x), 
+		    	                        zoomToRealCoord(y),
+		        	                    getZoomSize(),
+		            	                getZoomSize());
+		}
 	}
 
 	private float getZoomHeight (int x, int y) {

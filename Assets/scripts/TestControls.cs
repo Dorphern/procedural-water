@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Text;
+using System;
 
 public class TestControls : MonoBehaviour {
 
@@ -191,9 +192,10 @@ public class TestControls : MonoBehaviour {
 			};
 		}
 
+		System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+		sw.Start();
 		TerrainMerger terrainMerger = new TerrainMerger(modifier, res, mapSplits);
 		terrainMerger.generate(erosionOptions, time, waterAmount);
-
 
 		//modifier.setSize(res, res);
 		this.groundHeightmap = terrainMerger.TerrainHeightmap();
@@ -208,6 +210,11 @@ public class TestControls : MonoBehaviour {
 		this.waterflowMap = terrainMerger.WaterflowHeightmap();
 
 		this.updateTerrainVisualization();
+
+		sw.Stop();
+		float totalTime = (float)Math.Round(sw.ElapsedMilliseconds / 10f) / 100f;
+		int s = res - 1;
+		Debug.Log ("Finished in " + totalTime + "s on (" + s + "x" + s + ")");
 	}
 
 	void updateTerrainVisualization() {
