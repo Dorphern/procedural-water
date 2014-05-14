@@ -59,6 +59,12 @@ public class OptimizedInfiniteModifier : ATerrainModifier {
 		//Debug.Log ("water height: " + getZoomWaterHeight(3, 3));
 		Debug.Log("dir: " + wDir);*/
 
+
+		for (int i = time; i > 0; i--) {
+			moveWaterOnZoom(i);
+		}
+
+		/*
 		moveWaterOnZoom(8);
 		moveWaterOnZoom(7);
 		moveWaterOnZoom(6);
@@ -66,7 +72,7 @@ public class OptimizedInfiniteModifier : ATerrainModifier {
 		moveWaterOnZoom(4);
 		moveWaterOnZoom(3);
 		moveWaterOnZoom(2);
-		moveWaterOnZoom(1);
+		moveWaterOnZoom(1);*/
 	}
 
 	private void moveWaterOnZoom (int zoom) {

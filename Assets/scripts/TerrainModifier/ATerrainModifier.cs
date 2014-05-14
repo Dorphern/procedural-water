@@ -44,7 +44,7 @@ public abstract class ATerrainModifier {
 	}
 
 	public void setScale(float s) {
-		//this.scale = s;
+		terrainGenerator.setScale(s);
 	}
 
 	/** Generate the the whole terrain */

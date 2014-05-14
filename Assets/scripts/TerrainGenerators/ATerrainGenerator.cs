@@ -13,7 +13,7 @@ public abstract class ATerrainGenerator
 	protected double persistence = 0.5d;
 	protected int octaves = 1;
 	protected QualityMode quality = QualityMode.High;
-	protected double scale = 2d;
+	protected double scale = 1d;
 	protected float heightScale = 1f;
 	protected Perlin perlin;
 
@@ -66,6 +66,10 @@ public abstract class ATerrainGenerator
 
 	public int getOffsetY() {
 		return offsetY;
+	}
+
+	public void setScale(float s) {
+		this.scale = s;
 	}
 }
 

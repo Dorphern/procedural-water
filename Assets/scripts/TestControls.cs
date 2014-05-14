@@ -34,6 +34,8 @@ public class TestControls : MonoBehaviour {
 	[SerializeField] private float waterAmount = 0.1f;
 	[SerializeField] private int time = 5;
 
+	[SerializeField] private int resolution = 1;
+
 
 	// Use this for initialization
 	void Start () {
@@ -119,8 +121,8 @@ public class TestControls : MonoBehaviour {
 		TerrainData groundTerrainData 	= this.groundTerrain.terrainData;
 		TerrainData waterTerrainData 	= this.waterTerrain.terrainData;
 
-		int res = (int)(Mathf.Pow(2, this.simulationSize) + 1f);
-		int size = res * 2;
+		int res = (int)(Mathf.Pow(2, this.simulationSize - resolution + 1) + 1f);
+		int size = res * 2 * (int)Mathf.Pow (2f, resolution - 1);
 		
 		int height = 200;
 		
@@ -166,8 +168,8 @@ public class TestControls : MonoBehaviour {
 
 		setTerrainObjects();
 
-		int res = (int)(Mathf.Pow(2, this.simulationSize) + 1f);
-		int size = res * 2;
+		int res = (int)(Mathf.Pow(2, this.simulationSize - resolution + 1) + 1f);
+		int size = res * 2 * (int)Mathf.Pow (2f, resolution - 1);
 
 		ATerrainGenerator generator = this.getTerrainGenerator(this.terrainGenerator, 
 		                                                       numberFromString(this.generationSeed));
@@ -179,6 +181,8 @@ public class TestControls : MonoBehaviour {
 		} else {
 			modifier = new FiniteTerrainModifier(generator);
 		}
+
+		modifier.setScale(Mathf.Pow (2f, resolution - 1));
 
 		ErosionOptions? erosionOptions = null;
 		if (this.visualizeErosion) {
@@ -195,7 +199,7 @@ public class TestControls : MonoBehaviour {
 		System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
 		sw.Start();
 		TerrainMerger terrainMerger = new TerrainMerger(modifier, res, mapSplits);
-		terrainMerger.generate(erosionOptions, time, waterAmount);
+		terrainMerger.generate(erosionOptions, time - resolution + 1, waterAmount);
 
 		//modifier.setSize(res, res);
 		this.groundHeightmap = terrainMerger.TerrainHeightmap();
