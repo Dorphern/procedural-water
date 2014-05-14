@@ -18,11 +18,12 @@ public class TerrainMerger  {
 		this.modifier 	= mod;
 		this.size 		= size - 1;
 		this.splits		= (int)Mathf.Pow(2, (splits - 1)); 
+		Debug.Log ("splits: " + splits);
 	}
 
 	public void generate(ErosionOptions? erosionOptions, int time, float waterAmount) {
 		int chunkSize = size / splits;
-		if (splits != 1) chunkSize /= 2;
+		//if (splits != 1) chunkSize /= 2;
 
 		modifier.setSize(chunkSize, chunkSize);
 

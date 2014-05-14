@@ -27,7 +27,10 @@ public abstract class ATerrainModifier {
 	protected ulong[,] accumulatedHeights;		// Dynamic table containing the accumulated heighs across the terrain, used to find average heights.
 	protected Heightmap accHeights;
 
+	protected int totalSize = 0;
+
 	protected readonly ulong PRECISION = 10000;
+
 
 
 	public ATerrainModifier(ATerrainGenerator terrainGenerator) {
@@ -37,6 +40,7 @@ public abstract class ATerrainModifier {
 	public void setSize(int width, int height) {
 		this.width 	= width;
 		this.height = height;
+		totalSize = width;
 	}
 	
 	public void setOffset(int x, int y) {
@@ -70,27 +74,6 @@ public abstract class ATerrainModifier {
 	public float GetAverageAreaHeight(int x, int y, int w, int h) {
 		w--;
 		h--;
-		/*float numb = 0;
-		for (int i = x; i <= w + x; i++){
-			for (int j = y; j <= h + y; j++){
-				numb += terrainHeightmap.getHeight(i, j);
-			}
-		}
-
-		numb /= ((w + 1) * (h + 1));*/
-		
-		/*float horizental = 0; 
-		float vertical = 0; 
-		float b = 0;
-
-		if (y > 0) horizental = accHeights.getHeight (x + w, y - 1);
-		if (x > 0) vertical = accHeights.getHeight (x - 1, y + h);
-		if (x > 0 && y > 0) b = accHeights.getHeight (x - 1, y - 1);
-
-		float acc = accHeights.getHeight (x + w, y + h);
-
-		float accu = (acc - horizental - vertical + b) / ((w + 1) * (h + 1));
-		*/
 
 		ulong horizontal = 0;
 		ulong vertical = 0;
@@ -114,10 +97,9 @@ public abstract class ATerrainModifier {
 	protected void createAccumulatedMap() {
 		// Set accumulated heigthmap
 		//accHeights = new Heightmap(width, height, 0f);
-		accumulatedHeights = new ulong[width, height];
-
-		for (int x = 0; x < this.width; x++) {
-			for (int y = 0; y < this.width; y++) {
+		accumulatedHeights = new ulong[totalSize, totalSize];
+		for (int x = 0; x < this.totalSize; x++) {
+			for (int y = 0; y < this.totalSize; y++) {
 
 				accumulatedHeights[x, y] = (ulong)(terrainHeightmap.getHeight(x, y) * PRECISION);
 				if (x > 0) accumulatedHeights[x, y] += accumulatedHeights[x - 1, y];

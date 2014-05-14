@@ -179,7 +179,7 @@ public class TestControls : MonoBehaviour {
 			modifier = new OptimizedInfiniteModifier(generator);
 			//modifier = new InfiniteTerrainModifier(generator);
 		} else {
-			modifier = new FiniteTerrainModifier(generator);
+			modifier = new OptimizedFiniteModifier(generator);
 		}
 
 		modifier.setScale(Mathf.Pow (2f, resolution - 1));
