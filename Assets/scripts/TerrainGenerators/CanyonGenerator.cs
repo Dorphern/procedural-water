@@ -9,10 +9,10 @@ public class CanyonGenerator : ATerrainGenerator
 {
 
 	public CanyonGenerator(int seed) : base(seed) {
-		this.frequency = 0.1d;
+		this.frequency = 0.02d;
 		this.persistence = 0.7d;
 		this.octaves = 3;
-		this.scale = 0.2d;
+		this.scale = 1d;
 
 		this.setupGenerator();
 	}

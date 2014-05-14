@@ -51,28 +51,9 @@ public class OptimizedInfiniteModifier : ATerrainModifier {
 	private void applyWaterEffects (int time, float waterAmount) {
 		waterflowMap = new Heightmap(width, height, waterAmount);
 
-		/*workingZoom = 1;
-		Debug.Log ("size: " + (width / getZoomSize()));
-		int wDir = waterDirection(1020, 1020);
-
-		//Debug.Log ("terrain height: " + getZoomTerrainHeight(3, 3));
-		//Debug.Log ("water height: " + getZoomWaterHeight(3, 3));
-		Debug.Log("dir: " + wDir);*/
-
-
 		for (int i = time; i > 0; i--) {
 			moveWaterOnZoom(i);
 		}
-
-		/*
-		moveWaterOnZoom(8);
-		moveWaterOnZoom(7);
-		moveWaterOnZoom(6);
-		moveWaterOnZoom(5);
-		moveWaterOnZoom(4);
-		moveWaterOnZoom(3);
-		moveWaterOnZoom(2);
-		moveWaterOnZoom(1);*/
 	}
 
 	private void moveWaterOnZoom (int zoom) {

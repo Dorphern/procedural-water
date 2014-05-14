@@ -218,7 +218,7 @@ public class TestControls : MonoBehaviour {
 		sw.Stop();
 		float totalTime = (float)Math.Round(sw.ElapsedMilliseconds / 10f) / 100f;
 		int s = res - 1;
-		Debug.Log ("Finished in " + totalTime + "s on (" + s + "x" + s + ")");
+		Debug.Log ("Finished in " + totalTime + "s on (" + s + "x" + s + ") with res of " + resolution);
 	}
 
 	void updateTerrainVisualization() {
