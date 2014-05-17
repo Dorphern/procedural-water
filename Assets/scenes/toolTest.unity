@@ -413,6 +413,7 @@ MonoBehaviour:
   erosionsPerGeneration: 7
   waterAmount: .100000001
   time: 5
+  resolution: 1
 --- !u!4 &1777452383
 Transform:
   m_ObjectHideFlags: 0

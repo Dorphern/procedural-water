@@ -1,22 +1,46 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class OptimizedInfiniteModifier : ATerrainModifier {
-
+public class KernelFiniteModifier : ATerrainModifier {
+	
 	int[] tileNeighbours = { 
 		0,1,  0,-1,  1,0,  -1,0,  
 		1,1,  1,-1,  -1,1,  -1,-1
 	};
 
+
+	int[] kernelNeightbours = {
+		-1, 1,  0, 1,  1, 1,
+		-1, 0,  0, 0,  1, 0,
+		-1,-1,  0,-1,  1,-1
+	};
+
+	// 3x3 matrix
+	float[] kernelModifier = {
+		2f,  4f,  2f,
+
+		4f,	 0f,  4f,
+
+		2f,  4f,  2f
+	};
+	
 	private int workingZoom = 0;
 	private int mapPadding = 0;
+	
+	public KernelFiniteModifier(ATerrainGenerator tg) : base(tg) { 
 
+		// Kernel normalize
+		float kernsum = 0f;
+		for (int i = 0; i < kernelModifier.Length; i++) kernsum += kernelModifier[i];
+		for (int i = 0; i < kernelModifier.Length; i++) kernelModifier[i] /= kernsum;
 
-	public OptimizedInfiniteModifier(ATerrainGenerator tg) : base(tg) {  }
+		//for (int i = 0; i < kernelModifier.Length; i++) Debug.Log (kernelModifier[i]);
 
-
+	}
+	
+	
 	public override void generate (ErosionOptions? erosionOptions, int time, float waterAmount) {
-		mapPadding = (int)Mathf.Pow (2f, time);
+		mapPadding = Mathf.FloorToInt(Mathf.Pow(2f, (float)time));
 		totalSize = width + mapPadding * 2;
 
 		terrainHeightmap = new Heightmap(totalSize);
@@ -28,23 +52,21 @@ public class OptimizedInfiniteModifier : ATerrainModifier {
 				terrainHeightmap.setHeight(x, y, this.terrainGenerator.GetHeight(x - mapPadding, y - mapPadding));
 			}
 		}
-
+		
 		createAccumulatedMap();
 		applyWaterEffects(time, waterAmount);
 		createFinalHeightmaps();
 	}
-
+	
 	// Create waterHeightmap for export
 	private void createFinalHeightmaps() {
-		terrainHeightmap = terrainHeightmap.crop(mapPadding, mapPadding, width, height);
-		//waterflowMap = waterflowMap.crop (0,0, width, height);
-		waterflowMap = waterflowMap.crop (mapPadding, mapPadding, width, height);
-		erosionMap = erosionMap.crop (mapPadding, mapPadding, width, height);
-
 		waterHeightmap = new Heightmap(width, height);
+		terrainHeightmap = terrainHeightmap.crop(mapPadding, mapPadding, width, height);
+		waterflowMap = waterflowMap.crop(mapPadding, mapPadding, width, height);
+		erosionMap = erosionMap.crop(mapPadding, mapPadding, width, height);
 
-		for (int x = 0; x < this.width; x++) {
-			for (int y = 0; y < this.width; y++) {
+		for (int x = 0; x < width; x++) {
+			for (int y = 0; y < height; y++) {
 				// Set terrain heightmap
 				//float th = terrainHeightmap.getHeight(x, y) + erosionMap.getHeight(x, y);
 				//terrainHeightmap.setHeight(x, y, th);
@@ -55,7 +77,7 @@ public class OptimizedInfiniteModifier : ATerrainModifier {
 			}
 		}
 	}
-
+	
 	private void applyWaterEffects (int time, float waterAmount) {
 		waterflowMap = new Heightmap(totalSize, waterAmount);
 
@@ -65,56 +87,54 @@ public class OptimizedInfiniteModifier : ATerrainModifier {
 			moveWaterOnZoom(i);
 		}
 	}
-
+	
 	private void moveWaterOnZoom (int zoom) {
 		workingZoom = zoom;
 		int s = getZoomSize();
-
+		
+		//int hsteps = (int) (width / getZoomSize());
+		//int vsteps = (int) (height / getZoomSize());
 		int steps = Mathf.FloorToInt(totalSize / s);
-		//Debug.Log ("Steps: " + steps + " - " + s);
-		//Debug.Log ("s");
+		int off = Mathf.FloorToInt(mapPadding / s);
 
-		for (int x = 0; x < steps; x++) {
-			for (int y = 0; y < steps; y++) {
-				int dirIndex = waterDirection(x, y);
+		//setZoomWaterHeight(1, 1, 0f);
+		Debug.Log ("off: " + off);
 
-				if (dirIndex == -1) continue;
+		for (int x = 1; x < steps - 1; x++) {
+			for (int y = 1; y < steps - 1; y++) {
+				float newValue = calculateHeight(x, y);
+				newValue -= getZoomTerrainHeight(x, y);
+				//Debug.Log (newValue);
+				//if (newValue < 0) { newValue = 0; }
 
-				int tx = x + tileNeighbours[dirIndex],
-					ty = y + tileNeighbours[dirIndex + 1];
-				float fromAmount = getZoomWaterHeight(x, y),
-					  toAmount   = getZoomWaterHeight(tx, ty);
-
-				float diff = getZoomTerrainHeight(x, y) - getZoomTerrainHeight(tx, ty);
-				float totalWater = fromAmount + toAmount;
-				
-				float ww = fromAmount + toAmount;
-
-				if (totalWater <= diff) {
-					// All water goes to new tile
-					fromAmount = 0f;
-					toAmount = totalWater;
-				} else {
-					// All water is split amongst the tiles
-					float moving = ((fromAmount - toAmount) + diff) / 2f;
-					fromAmount -= moving;
-					toAmount += moving;
-				}
-
-
-
-				setZoomWaterHeight(x, y, fromAmount);
-				setZoomWaterHeight(tx, ty, toAmount);
+				setZoomWaterHeight(x, y, newValue);
 			}
 		}
 	}
 
+
+	private float calculateHeight (int x, int y) {
+		float[] tmp = new float[kernelModifier.Length];
+		float val = 0f;
+
+		// Get adjecent values
+		for (int i = 0; i < tmp.Length; i++) {
+			val += kernelModifier[i] * 
+				getZoomHeight(
+					x + kernelNeightbours[i * 2], 
+			        y + kernelNeightbours[i * 2 + 1]);
+		}
+
+		//Debug.Log (val);
+		return val;
+	}
+	
 	private float getZoomWaterHeight (int x, int y) {
 		int realX = zoomToRealCoord(x);
 		int realY = zoomToRealCoord(y);
 		return waterflowMap.getHeight(realX, realY);
 	}
-
+	
 	private void setZoomWaterHeight (int x, int y, float h) {
 		int x0 = zoomToRealCoord(x);
 		int y0 = zoomToRealCoord(y);
@@ -127,13 +147,14 @@ public class OptimizedInfiniteModifier : ATerrainModifier {
 	}
 
 	private float getZoomTerrainHeight (int x, int y) {
-		if (workingZoom == 1)
+		if (workingZoom == 111) {
 			return terrainGenerator.GetHeight(x, y);
-		
-		return GetAverageAreaHeight(zoomToRealCoord(x), 
-	    	                        zoomToRealCoord(y),
-	        	                    getZoomSize(),
-	            	                getZoomSize());
+		} else {
+			return GetAverageAreaHeight(zoomToRealCoord(x), 
+		    	                        zoomToRealCoord(y),
+		        	                    getZoomSize(),
+		            	                getZoomSize());
+		}
 	}
 
 	private float getZoomHeight (int x, int y) {
@@ -145,33 +166,35 @@ public class OptimizedInfiniteModifier : ATerrainModifier {
 	private int zoomToRealCoord (int z) {
 		return z * getZoomSize();
 	}
-
+	
 	private int getZoomSize () {
 		return Mathf.FloorToInt(Mathf.Pow(2f, (float)workingZoom - 1));
 	}
-
-
-	/**
+	
+	/*
+	**
 	 * Find the direction of the water on the current tile,
 	 * taking into account the total height (water and terrain) on every tile
-	 */
+	 *
 	private int waterDirection (int x, int y) {
 		float currHeight = getZoomHeight(x, y);
 		int neighbourIndex = -1;
 		for (int i = 0; i < tileNeighbours.Length; i += 2) {
-			int dx = x + tileNeighbours[i];
-			int dy = y + tileNeighbours[i + 1];
-
-			int max = totalSize / getZoomSize();
-			if (dx < 0 || dy < 0 || dx >= max || dy >= max) continue;
+			int dx = x + tileNeighbours[i],
+			dy = y + tileNeighbours[i + 1];
 			
-			float h = getZoomHeight(dx, dy);
-
-			if (h < currHeight) {
-				currHeight = h;
+			//return -1;
+			if (dx < 0 || dy < 0 || dx >= (terrainHeightmap.getSizeWidth() / getZoomSize())
+			    || dy >= (terrainHeightmap.getSizeHeight() / getZoomSize())) continue;
+			
+			float height = getZoomHeight(dx, dy);
+			
+			if (height < currHeight) {
+				currHeight = height;
 				neighbourIndex = i;
 			}
 		}
 		return neighbourIndex;
 	}
+	*/
 }
