@@ -17,15 +17,16 @@ public class KernelFiniteModifier : ATerrainModifier {
 
 	// 3x3 matrix
 	float[] kernelModifier = {
-		2f,  4f,  2f,
+		2f,  2f,  2f,
 
-		4f,	 0f,  4f,
+		2f,	 0f,  2f,
 
-		2f,  4f,  2f
+		2f,  2f,  2f
 	};
 	
 	private int workingZoom = 0;
 	private int mapPadding = 0;
+	private Heightmap tempWaterFlowMap;
 	
 	public KernelFiniteModifier(ATerrainGenerator tg) : base(tg) { 
 
@@ -100,6 +101,8 @@ public class KernelFiniteModifier : ATerrainModifier {
 		//setZoomWaterHeight(1, 1, 0f);
 		Debug.Log ("off: " + off);
 
+		tempWaterFlowMap = new Heightmap(totalSize, 0f);
+
 		for (int x = 1; x < steps - 1; x++) {
 			for (int y = 1; y < steps - 1; y++) {
 				float newValue = calculateHeight(x, y);
@@ -107,9 +110,12 @@ public class KernelFiniteModifier : ATerrainModifier {
 				//Debug.Log (newValue);
 				//if (newValue < 0) { newValue = 0; }
 
-				setZoomWaterHeight(x, y, newValue);
+				setTempZoomWaterHeight(x, y, newValue);
 			}
 		}
+
+		waterflowMap = tempWaterFlowMap;
+
 	}
 
 
@@ -135,13 +141,13 @@ public class KernelFiniteModifier : ATerrainModifier {
 		return waterflowMap.getHeight(realX, realY);
 	}
 	
-	private void setZoomWaterHeight (int x, int y, float h) {
+	private void setTempZoomWaterHeight (int x, int y, float h) {
 		int x0 = zoomToRealCoord(x);
 		int y0 = zoomToRealCoord(y);
 
 		for (int i = x0; i < x0 + getZoomSize(); i++) {
 			for (int j = y0; j < y0 + getZoomSize(); j++) {
-				waterflowMap.setHeight(i, j, h);
+				tempWaterFlowMap.setHeight(i, j, h);
 			}
 		}
 	}
