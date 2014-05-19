@@ -24,7 +24,7 @@ public class MountainGenerator : ATerrainGenerator
 		float tVal = - Mathf.Abs(0.5f - base.TerrainValue(x, y));
 		this.octaves = 2;
 		float vVal = 0.5f - Mathf.Abs(0.5f - base.TerrainValue(-x * .3f, -y * 0.3f)) * 2f;
-		return (vVal - 0.3f) * tVal * 4f + vVal * 2f;
+		return Mathf.Clamp((vVal - 0.3f) * tVal * 4f + vVal * 2f, 0f, 1f);
 	}
 }
 

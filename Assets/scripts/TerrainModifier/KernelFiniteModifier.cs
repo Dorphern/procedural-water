@@ -19,7 +19,7 @@ public class KernelFiniteModifier : ATerrainModifier {
 	float[] kernelModifier = {
 		2f,  2f,  2f,
 
-		2f,	 0f,  2f,
+		2f,	 1f,  2f,
 
 		2f,  2f,  2f
 	};

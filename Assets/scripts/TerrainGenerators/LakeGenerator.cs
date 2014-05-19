@@ -22,7 +22,7 @@ public class LakeGenerator : ATerrainGenerator
 	{
 		float tVal = Mathf.Abs(0.5f - base.TerrainValue(x, y));
 		float vVal = base.TerrainValue(x * 0.4f, y * 0.4f);
-		return vVal - tVal;
+		return Mathf.Clamp(vVal - tVal, 0f, 1f);
 	}
 }
 
