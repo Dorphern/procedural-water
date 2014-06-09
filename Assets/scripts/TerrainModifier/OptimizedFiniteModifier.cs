@@ -37,22 +37,17 @@ public class OptimizedFiniteModifier : ATerrainModifier {
 		waterHeightmap = new Heightmap(width, height);
 		for (int x = 0; x < this.width; x++) {
 			for (int y = 0; y < this.width; y++) {
-				// Set terrain heightmap
-				//float th = terrainHeightmap.getHeight(x, y) + erosionMap.getHeight(x, y);
-				//terrainHeightmap.setHeight(x, y, th);
-				
+
 				// Set water heightmap
 				float wh = terrainHeightmap.getHeight(x, y) + waterflowMap.getHeight(x, y);
 				waterHeightmap.setHeight(x, y, wh - 0.01f);
+
 			}
 		}
 	}
 	
 	private void applyWaterEffects (int time, float waterAmount) {
 		waterflowMap = new Heightmap(width, height, waterAmount);
-
-		//moveWaterOnZoom(time);
-
 		for (int i = time; i > 0; i--) {
 			moveWaterOnZoom(i);
 		}
@@ -67,7 +62,6 @@ public class OptimizedFiniteModifier : ATerrainModifier {
 		
 		for (int x = 0; x < hsteps; x++) {
 			for (int y = 0; y < vsteps; y++) {
-				//Debug.Log ("step!");
 				int dirIndex = waterDirection(x, y);
 				
 				if (dirIndex == -1) continue;
@@ -93,9 +87,7 @@ public class OptimizedFiniteModifier : ATerrainModifier {
 					fromAmount -= moving;
 					toAmount += moving;
 				}
-				
-				
-				
+
 				setZoomWaterHeight(x, y, fromAmount);
 				setZoomWaterHeight(tx, ty, toAmount);
 				
@@ -156,8 +148,8 @@ public class OptimizedFiniteModifier : ATerrainModifier {
 		for (int i = 0; i < tileNeighbours.Length; i += 2) {
 			int dx = x + tileNeighbours[i],
 			dy = y + tileNeighbours[i + 1];
-			
-			//return -1;
+
+			// Check if focused tile is within heightmap boundaries
 			if (dx < 0 || dy < 0 || dx >= (terrainHeightmap.getSizeWidth() / getZoomSize())
 			    || dy >= (terrainHeightmap.getSizeHeight() / getZoomSize())) continue;
 			

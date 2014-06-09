@@ -26,29 +26,4 @@ public class InfiniteTerrainModifier : ATerrainModifier {
 		erosionMap 			= finiteTerrainModifier.getErosionMap().crop(padding, padding, width, height);
 	}
 
-	/*
-	public override Heightmap modifiedWater() {
-		Heightmap heightmap = new Heightmap(this.width, this.height);
-		
-		for (int x = 0; x < this.width; x++) {
-			for (int y = 0; y < this.width; y++) {
-				heightmap.setHeight(x, y, 0.1f);
-			}
-		}
-		
-		return heightmap;
-	}
-	
-	public override Heightmap modifiedTerrain(bool erode) {
-		Heightmap heightmap = new Heightmap(this.width, this.height);
-		
-		for (int x = 0; x < this.width; x++) {
-			for (int y = 0; y < this.width; y++) {
-				heightmap.setHeight(x, y, this.terrainGenerator.GetHeight(x, y));
-			}
-		}
-		this.heightmap = heightmap;
-
-		return heightmap;
-	}*/
 }

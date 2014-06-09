@@ -2,14 +2,8 @@
 using System.Collections;
 
 public class KernelFiniteModifier : ATerrainModifier {
-	
-	int[] tileNeighbours = { 
-		0,1,  0,-1,  1,0,  -1,0,  
-		1,1,  1,-1,  -1,1,  -1,-1
-	};
 
-
-	int[] kernelNeightbours = {
+	int[] kernelNeighbours = {
 		-1, 1,  0, 1,  1, 1,
 		-1, 0,  0, 0,  1, 0,
 		-1,-1,  0,-1,  1,-1
@@ -82,8 +76,6 @@ public class KernelFiniteModifier : ATerrainModifier {
 	private void applyWaterEffects (int time, float waterAmount) {
 		waterflowMap = new Heightmap(totalSize, waterAmount);
 
-		//moveWaterOnZoom(time);
-
 		for (int i = time; i > 0; i--) {
 			moveWaterOnZoom(i);
 		}
@@ -92,14 +84,8 @@ public class KernelFiniteModifier : ATerrainModifier {
 	private void moveWaterOnZoom (int zoom) {
 		workingZoom = zoom;
 		int s = getZoomSize();
-		
-		//int hsteps = (int) (width / getZoomSize());
-		//int vsteps = (int) (height / getZoomSize());
-		int steps = Mathf.FloorToInt(totalSize / s);
-		int off = Mathf.FloorToInt(mapPadding / s);
 
-		//setZoomWaterHeight(1, 1, 0f);
-		Debug.Log ("off: " + off);
+		int steps = Mathf.FloorToInt(totalSize / s);
 
 		tempWaterFlowMap = new Heightmap(totalSize, 0f);
 
@@ -107,8 +93,6 @@ public class KernelFiniteModifier : ATerrainModifier {
 			for (int y = 1; y < steps - 1; y++) {
 				float newValue = calculateHeight(x, y);
 				newValue -= getZoomTerrainHeight(x, y);
-				//Debug.Log (newValue);
-				//if (newValue < 0) { newValue = 0; }
 
 				setTempZoomWaterHeight(x, y, newValue);
 			}
@@ -120,18 +104,16 @@ public class KernelFiniteModifier : ATerrainModifier {
 
 
 	private float calculateHeight (int x, int y) {
-		float[] tmp = new float[kernelModifier.Length];
 		float val = 0f;
 
 		// Get adjecent values
-		for (int i = 0; i < tmp.Length; i++) {
+		for (int i = 0; i < kernelModifier.Length; i++) {
 			val += kernelModifier[i] * 
 				getZoomHeight(
-					x + kernelNeightbours[i * 2], 
-			        y + kernelNeightbours[i * 2 + 1]);
+					x + kernelNeighbours[i * 2], 
+			        y + kernelNeighbours[i * 2 + 1]);
 		}
 
-		//Debug.Log (val);
 		return val;
 	}
 	
@@ -176,31 +158,5 @@ public class KernelFiniteModifier : ATerrainModifier {
 	private int getZoomSize () {
 		return Mathf.FloorToInt(Mathf.Pow(2f, (float)workingZoom - 1));
 	}
-	
-	/*
-	**
-	 * Find the direction of the water on the current tile,
-	 * taking into account the total height (water and terrain) on every tile
-	 *
-	private int waterDirection (int x, int y) {
-		float currHeight = getZoomHeight(x, y);
-		int neighbourIndex = -1;
-		for (int i = 0; i < tileNeighbours.Length; i += 2) {
-			int dx = x + tileNeighbours[i],
-			dy = y + tileNeighbours[i + 1];
-			
-			//return -1;
-			if (dx < 0 || dy < 0 || dx >= (terrainHeightmap.getSizeWidth() / getZoomSize())
-			    || dy >= (terrainHeightmap.getSizeHeight() / getZoomSize())) continue;
-			
-			float height = getZoomHeight(dx, dy);
-			
-			if (height < currHeight) {
-				currHeight = height;
-				neighbourIndex = i;
-			}
-		}
-		return neighbourIndex;
-	}
-	*/
+
 }

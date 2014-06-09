@@ -11,19 +11,17 @@ public class TerrainMerger  {
 	private Heightmap erosion;
 
 	private int size;
-	private int splits;
+	private int chunks;
 
 
 	public TerrainMerger(ATerrainModifier mod, int size, int splits) {
 		this.modifier 	= mod;
 		this.size 		= size - 1;
-		this.splits		= (int)Mathf.Pow(2, (splits - 1)); 
-		Debug.Log ("splits: " + splits);
+		this.chunks		= (int)Mathf.Pow(2, (splits - 1)); 
 	}
 
 	public void generate(ErosionOptions? erosionOptions, int time, float waterAmount) {
-		int chunkSize = size / splits;
-		//if (splits != 1) chunkSize /= 2;
+		int chunkSize = size / chunks;
 
 		modifier.setSize(chunkSize, chunkSize);
 
@@ -49,19 +47,19 @@ public class TerrainMerger  {
 
 	}
 
-	public Heightmap WaterHeightmap() {
+	public Heightmap getWaterHeightmap() {
 		return waterHeightmap;
 	}
 
-	public Heightmap TerrainHeightmap() {
+	public Heightmap getTerrainHeightmap() {
 		return terrainHeightmap;
 	}
 
-	public Heightmap WaterflowHeightmap() {
+	public Heightmap getWaterflowHeightmap() {
 		return waterflow;
 	}
 	
-	public Heightmap ErosionHeightmap() {
+	public Heightmap getErosionHeightmap() {
 		return erosion;
 	}
 }

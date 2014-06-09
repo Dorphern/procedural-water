@@ -44,7 +44,7 @@ public class TestControls : MonoBehaviour {
 	}
 
 	void OnGUI () {
-		GUILayout.BeginArea(new Rect(0, 0, 200, 500));
+		GUILayout.BeginArea(new Rect(10, 10, 200, 500));
 		GUILayout.BeginVertical("box");
 
 		//GUILayout.Box("walla", GUILayout.Height(200));
@@ -177,10 +177,9 @@ public class TestControls : MonoBehaviour {
 
 		if (this.useInfiniteModifier) {
 			modifier = new OptimizedInfiniteModifier(generator);
-			//modifier = new InfiniteTerrainModifier(generator);
 		} else {
-			//modifier = new OptimizedFiniteModifier(generator);
-			modifier = new KernelFiniteModifier(generator);
+			modifier = new OptimizedFiniteModifier(generator);
+			//modifier = new KernelFiniteModifier(generator);
 		}
 
 		modifier.setScale(Mathf.Pow (2f, resolution - 1));
@@ -197,25 +196,22 @@ public class TestControls : MonoBehaviour {
 			};
 		}
 
+		// Start stopwatch to time the process
 		System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
 		sw.Start();
+
 		TerrainMerger terrainMerger = new TerrainMerger(modifier, res, mapSplits);
 		terrainMerger.generate(erosionOptions, time - resolution + 1, waterAmount);
 
-		//modifier.setSize(res, res);
-		this.groundHeightmap = terrainMerger.TerrainHeightmap();
-		this.waterHeightmap = terrainMerger.WaterHeightmap();
+		this.groundHeightmap = terrainMerger.getTerrainHeightmap();
+		this.waterHeightmap = terrainMerger.getWaterHeightmap();
 
-
-		//Erosion erosionController = new Erosion(this.groundHeightmap, this.rainAmount, this.solubility, this.evaporation, this.sedimentCapacity);
-		//erosionController.ErodeTerrain(generations, erosionsPerGeneration);
-
-
-		this.erosionMap = terrainMerger.ErosionHeightmap();
-		this.waterflowMap = terrainMerger.WaterflowHeightmap();
+		this.erosionMap = terrainMerger.getErosionHeightmap();
+		this.waterflowMap = terrainMerger.getWaterflowHeightmap();
 
 		this.updateTerrainVisualization();
 
+		// Stop stopwatch and show total processing time.
 		sw.Stop();
 		float totalTime = (float)Math.Round(sw.ElapsedMilliseconds / 10f) / 100f;
 		int s = res - 1;
