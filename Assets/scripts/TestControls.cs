@@ -35,9 +35,7 @@ public class TestControls : MonoBehaviour {
 	[SerializeField] private int time = 5;
 
 	[SerializeField] private int resolution = 1;
-
-
-	// Use this for initialization
+	
 	void Start () {
 		this.simulationSize = this.simSizeMin;
 		generateTerrain();
@@ -47,7 +45,6 @@ public class TestControls : MonoBehaviour {
 		GUILayout.BeginArea(new Rect(10, 10, 200, 500));
 		GUILayout.BeginVertical("box");
 
-		//GUILayout.Box("walla", GUILayout.Height(200));
 		this.generationSeed = GUILayout.TextField(this.generationSeed);
 
 		GUILayout.BeginHorizontal();
@@ -109,8 +106,7 @@ public class TestControls : MonoBehaviour {
 
 	int numberFromString(string str) {
 		int d = 0, i = 0;
-		foreach (char c in str)
-		{
+		foreach (char c in str) {
 			d += ((int) Mathf.Pow(10, i)) * (int) c;
 			i++;
 		}
@@ -138,6 +134,9 @@ public class TestControls : MonoBehaviour {
 				new Vector3(-groundTerrainData.size.x / 2f, 0f, -groundTerrainData.size.z / 2f);
 	}
 
+	/** 
+	 * Map and return terrain generator corresponding to num
+	 */
 	ATerrainGenerator getTerrainGenerator(int num, int seed) {
 		switch (num) {
 			case 0: return new MountainGenerator(seed);
@@ -148,6 +147,10 @@ public class TestControls : MonoBehaviour {
 		return null;
 	}
 
+	/**
+	 * Create a 4d vector, that represents the color weighting on each point on the terrain
+	 * This is used for heatmaps
+	 */
 	Vector4 heatmapVector(float w) { 
 		Vector4 weights = new Vector4(1, 0, 0, 0);
 
@@ -161,7 +164,10 @@ public class TestControls : MonoBehaviour {
 
 		return weights;
 	}
-	
+
+	/**
+	 * Generate and create terrain
+	 */
 	void generateTerrain() {
 		TerrainData groundTerrainData 	= this.groundTerrain.terrainData;
 		TerrainData waterTerrainData 	= this.waterTerrain.terrainData;
@@ -175,15 +181,16 @@ public class TestControls : MonoBehaviour {
 		                                                       numberFromString(this.generationSeed));
 		ATerrainModifier modifier;
 
+		// Which terrain modifier should be used, finite or infinite?
 		if (this.useInfiniteModifier) {
 			modifier = new OptimizedInfiniteModifier(generator);
 		} else {
 			modifier = new OptimizedFiniteModifier(generator);
-			//modifier = new KernelFiniteModifier(generator);
 		}
 
 		modifier.setScale(Mathf.Pow (2f, resolution - 1));
 
+		// Instantiate the erosion options if we are going to visualize the erosions
 		ErosionOptions? erosionOptions = null;
 		if (this.visualizeErosion) {
 			erosionOptions = new ErosionOptions {
@@ -200,12 +207,12 @@ public class TestControls : MonoBehaviour {
 		System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
 		sw.Start();
 
+		// Generate the heightmap itself
 		TerrainMerger terrainMerger = new TerrainMerger(modifier, res, mapSplits);
 		terrainMerger.generate(erosionOptions, time - resolution + 1, waterAmount);
 
 		this.groundHeightmap = terrainMerger.getTerrainHeightmap();
 		this.waterHeightmap = terrainMerger.getWaterHeightmap();
-
 		this.erosionMap = terrainMerger.getErosionHeightmap();
 		this.waterflowMap = terrainMerger.getWaterflowHeightmap();
 
@@ -218,6 +225,10 @@ public class TestControls : MonoBehaviour {
 		Debug.Log ("Finished in " + totalTime + "s on (" + s + "x" + s + ") with res of " + resolution);
 	}
 
+	/**
+	 * Updets the visual representation of the terrain. This is used to control 
+	 * heatmap visualization amongst others
+	 */
 	void updateTerrainVisualization() {
 		TerrainData groundTerrainData 	= this.groundTerrain.terrainData;
 		TerrainData waterTerrainData 	= this.waterTerrain.terrainData;
